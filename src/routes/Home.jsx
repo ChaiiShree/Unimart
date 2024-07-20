@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useWishlist } from "../components/WishlistContext";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "./Home.css";
 
 const Home = () => {
@@ -60,6 +62,15 @@ const Home = () => {
     setSearchText(text); // Update search text state
   };
 
+  const handleAddToWishlist = async (product) => {
+    const result = await addToWishlist(product);
+    if (result.success) {
+      toast.success("Added to Wishlist");
+    } else {
+      toast.warn(result.message); // Use the specific error message from the result
+    }
+  };
+
   const renderProducts = () => {
     return filteredProducts.map((product) => (
       <div key={product._id} className="product-card">
@@ -69,12 +80,11 @@ const Home = () => {
           <p>{product.description}</p>
           <p>Hostel: {product.hostel}</p>
           <p>Price: ₹{product.price}</p>
-          <button onClick={() => addToWishlist(product)}>Add to Wishlist</button>
+          <button onClick={() => handleAddToWishlist(product)}>Add to Wishlist</button>
         </div>
       </div>
     ));
   };
-  
 
   return (
     <>
@@ -131,6 +141,7 @@ const Home = () => {
         </div>
       </div>
       <Footer />
+      <ToastContainer />
     </>
   );
 };

@@ -40,6 +40,7 @@ const productSchema = new mongoose.Schema({
   hostel: String,
   quantity: Number,
   telegramUsername: String,
+  whatsappNumber: String, // New field for WhatsApp number
 });
 
 const Product = mongoose.model('Product', productSchema);
@@ -52,12 +53,14 @@ const wishlistSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   images: [String], // Array of image strings
   hostel: { type: String, required: true },
-  telegramUsername: { type: String, required: true }
+  telegramUsername: String,
+  whatsappNumber: String, // New field for WhatsApp number
 });
 
 wishlistSchema.index({ userId: 1, productName: 1 }, { unique: true });
 
 const Wishlist = mongoose.model('Wishlist', wishlistSchema);
+
 
 // User Schema
 const userSchema = new mongoose.Schema({
@@ -105,9 +108,9 @@ app.get('/api/products', async (req, res) => {
 
 app.post('/api/products', async (req, res) => {
   try {
-    const { uid, sellerName, productName, category, description, price, images, hostel, quantity, telegramUsername} = req.body;
+    const { uid, sellerName, productName, category, description, price, images, hostel, quantity, telegramUsername, whatsappNumber} = req.body;
 
-    const newProduct = new Product({ uid, sellerName, productName, category, description, price, images, hostel, quantity, telegramUsername});
+    const newProduct = new Product({ uid, sellerName, productName, category, description, price, images, hostel, quantity, telegramUsername, whatsappNumber});
     await newProduct.save();
     res.status(201).json({ message: 'Product added successfully' });
   } catch (error) {
@@ -143,7 +146,7 @@ app.delete('/api/products/:id', async (req, res) => {
 // Wishlist Routes
 app.post('/api/wishlist/add', async (req, res) => {
   try {
-    const { userId, productName, description, price, images, hostel, telegramUsername } = req.body;
+    const { userId, productName, description, price, images, hostel, telegramUsername, whatsappNumber } = req.body;
 
     // Check if the product already exists in the wishlist
     const existingItem = await Wishlist.findOne({ userId, productName });
@@ -151,7 +154,7 @@ app.post('/api/wishlist/add', async (req, res) => {
       return res.status(400).json({ message: 'Product already in wishlist' });
     }
 
-    const newWishlistItem = new Wishlist({ userId, productName, description, price, images, hostel, telegramUsername});
+    const newWishlistItem = new Wishlist({ userId, productName, description, price, images, hostel, telegramUsername, whatsappNumber});
     await newWishlistItem.save();
     res.status(201).json(newWishlistItem);
   } catch (error) {

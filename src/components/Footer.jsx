@@ -31,7 +31,7 @@ const Footer = () => {
         <div>
           <h1 className="footer-title">JOIN OUR COMMUNITY</h1>
           <p className="footer-subtitle">
-            Be the first to hear about Sales and Auction
+            Be the first to hear about our Newest Products
           </p>
           <div className="email-container">
             <input
@@ -53,16 +53,16 @@ const Footer = () => {
           <h4>Stay in the know</h4>
           <p>Follow our socials</p>
           <div className="social-links">
-            <a href="/">
+          <a href=" https://www.instagram.com/uniipal?igsh=aXAybTloMXZ3aTZh&utm_source=qr " target="_blank" rel="noopener noreferrer">
               <i className="fa-brands fa-instagram"></i>
             </a>
-            <a href="/">
-              <i className="fa-solid fa-envelope"></i>
-            </a>
-            <a href="/">
+            <a href="mailto:unipalmark@gmail.com" target="_blank" rel="noopener noreferrer">
+    <i className="fa-solid fa-envelope"></i>
+</a>
+            <a href="https://x.com/uniipal " target="_blank" rel="noopener noreferrer">
               <i className="fa-brands fa-twitter"></i>
             </a>
-            <a href="/">
+            <a href="https://www.linkedin.com/in/unipal-marketplace/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" rel="noopener noreferrer">
               <i className="fa-brands fa-linkedin"></i>
             </a>
           </div>

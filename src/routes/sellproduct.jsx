@@ -15,7 +15,8 @@ function SellProduct() {
     images: [], // Changed to an array for multiple images
     hostel: "",
     quantity: "",
-    telegramUsername: ""
+    contactOption: "", // No default value for dropdown
+    contactValue: "" // Store the value for Telegram username or WhatsApp number
   });
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -54,7 +55,7 @@ function SellProduct() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { sellerName, productName, category, description, price, images, hostel, quantity, telegramUsername } = formData;
+    const { sellerName, productName, category, description, price, images, hostel, quantity, contactOption, contactValue } = formData;
 
     const productData = {
       sellerName,
@@ -65,8 +66,9 @@ function SellProduct() {
       images,
       hostel,
       quantity: Number(quantity), // Ensure quantity is converted to number
-      telegramUsername,
-      uid: user.uid
+      uid: user.uid,
+      telegramUsername: contactOption === "telegram" ? contactValue : "",
+      whatsappNumber: contactOption === "whatsapp" ? contactValue : ""
     };
 
     try {
@@ -91,7 +93,8 @@ function SellProduct() {
           images: [], // Reset images array
           hostel: "",
           quantity: "",
-          telegramUsername: ""
+          contactOption: "", // Reset to default option
+          contactValue: ""
         });
       } else {
         const errorData = await response.json();
@@ -122,14 +125,30 @@ function SellProduct() {
             onChange={handleChange}
           />
           <FormField
-            label="Telegram Username *"
-            id="telegramUsername"
-            name="telegramUsername"
-            type="text"
+            label="Contact Info *"
+            id="contactOption"
+            name="contactOption"
+            type="select"
             required
-            value={formData.telegramUsername}
+            value={formData.contactOption}
             onChange={handleChange}
+            options={[
+              { value: "", label: "Select Contact Info" },
+              { value: "telegram", label: "Telegram Username" },
+              { value: "whatsapp", label: "WhatsApp Number" }
+            ]}
           />
+          {formData.contactOption && (
+            <FormField
+              label={formData.contactOption === "telegram" ? "Telegram Username *" : "WhatsApp Number *"}
+              id="contactValue"
+              name="contactValue"
+              type="text"
+              required
+              value={formData.contactValue}
+              onChange={handleChange}
+            />
+          )}
           <FormField
             label="Product Name *"
             id="productName"
@@ -217,10 +236,9 @@ const FormField = ({ label, id, name, type, value, onChange, required, accept, o
       <label htmlFor={id}>{label}</label>
       {type === "select" ? (
         <select id={id} name={name} value={value} onChange={onChange} required={required}>
-          <option value="">Select an option</option>
           {options.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
+            <option key={index} value={option.value || option}>
+              {option.label || option}
             </option>
           ))}
         </select>

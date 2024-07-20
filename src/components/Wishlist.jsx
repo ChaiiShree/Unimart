@@ -1,4 +1,3 @@
-// Wishlist.jsx
 import React from "react";
 import { useWishlist } from "./WishlistContext";
 import Navbar from "./Navbar";
@@ -25,13 +24,25 @@ const Wishlist = () => {
           <p>{item.description}</p>
           <p>Hostel: {item.hostel}</p>
           <p>Price: ₹{item.price}</p>
-          <a
-            href={`https://t.me/${item.telegramUsername}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <button className="chat-button">Start Chatting</button>
-          </a>
+          {item.telegramUsername ? (
+            <a
+              href={`https://t.me/${item.telegramUsername}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button className="chat-button">Start Chatting on Telegram</button>
+            </a>
+          ) : item.whatsappNumber ? (
+            <a
+              href={`https://wa.me/${item.whatsappNumber}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button className="chat-button">Start Chatting on WhatsApp</button>
+            </a>
+          ) : (
+            <p>No contact information provided.</p>
+          )}
           <button
             className="remove-button"
             onClick={() => removeFromWishlist(item._id)}
