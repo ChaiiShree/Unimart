@@ -34,7 +34,7 @@ const Wishlist = () => {
             </a>
           ) : item.whatsappNumber ? (
             <a
-              href={`https://wa.me/${item.whatsappNumber}`}
+              href={`https://wa.me/91${item.whatsappNumber}`}
               target="_blank"
               rel="noopener noreferrer"
             >

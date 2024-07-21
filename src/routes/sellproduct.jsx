@@ -53,8 +53,22 @@ function SellProduct() {
     files.forEach(file => reader.readAsDataURL(file));
   };
 
+  const validateForm = () => {
+    const { sellerName, productName, category, description, price, images, hostel, quantity, contactOption, contactValue } = formData;
+    if (!sellerName || !productName || !category || !description || !price || images.length === 0 || !hostel || !quantity || !contactOption || !contactValue) {
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      setErrorMessage("Please fill in all the required fields.");
+      return;
+    }
+
     const { sellerName, productName, category, description, price, images, hostel, quantity, contactOption, contactValue } = formData;
 
     const productData = {
@@ -114,6 +128,7 @@ function SellProduct() {
       <div className="sell-product-container">
         <h2>Sell Your Product</h2>
         {successMessage && <p className="success-message">{successMessage}</p>}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
         <form className="sell-product-form" onSubmit={handleSubmit}>
           <FormField
             label="Seller Name *"
@@ -167,9 +182,24 @@ function SellProduct() {
             value={formData.category}
             onChange={handleChange}
             options={[
-              "Electronics", "Clothing", "Books", "Sports", "Stationery", "Services", "Furniture", "Kitchenware",
-              "Accessories", "Art Supplies", "Bicycles", "Musical Instruments", "Room Decor", "Food Items",
-              "Health & Fitness", "Beauty & Personal Care", "Others"
+              { value: "", label: "Select Category" },
+              { value: "Electronics", label: "Electronics" },
+              { value: "Clothing", label: "Clothing" },
+              { value: "Books", label: "Books" },
+              { value: "Sports", label: "Sports" },
+              { value: "Stationery", label: "Stationery" },
+              { value: "Services", label: "Services" },
+              { value: "Furniture", label: "Furniture" },
+              { value: "Kitchenware", label: "Kitchenware" },
+              { value: "Accessories", label: "Accessories" },
+              { value: "Art Supplies", label: "Art Supplies" },
+              { value: "Bicycles", label: "Bicycles" },
+              { value: "Musical Instruments", label: "Musical Instruments" },
+              { value: "Room Decor", label: "Room Decor" },
+              { value: "Food Items", label: "Food Items" },
+              { value: "Health & Fitness", label: "Health & Fitness" },
+              { value: "Beauty & Personal Care", label: "Beauty & Personal Care" },
+              { value: "Others", label: "Others" }
             ]}
           />
           <FormField
@@ -209,7 +239,23 @@ function SellProduct() {
             value={formData.hostel}
             onChange={handleChange}
             options={[
-              "A", "B", "C", "D", "E", "G", "H", "I", "J", "K", "L", "M", "N", "O", "PG", "Q"
+              { value: "", label: "Select Hostel" },
+              { value: "A", label: "A" },
+              { value: "B", label: "B" },
+              { value: "C", label: "C" },
+              { value: "D", label: "D" },
+              { value: "E", label: "E" },
+              { value: "G", label: "G" },
+              { value: "H", label: "H" },
+              { value: "I", label: "I" },
+              { value: "J", label: "J" },
+              { value: "K", label: "K" },
+              { value: "L", label: "L" },
+              { value: "M", label: "M" },
+              { value: "N", label: "N" },
+              { value: "O", label: "O" },
+              { value: "PG", label: "PG" },
+              { value: "Q", label: "Q" }
             ]}
           />
           <FormField
@@ -221,7 +267,6 @@ function SellProduct() {
             value={formData.quantity}
             onChange={handleChange}
           />
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
           <button type="submit">Upload</button>
         </form>
       </div>
