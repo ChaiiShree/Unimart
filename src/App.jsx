@@ -9,34 +9,22 @@ import Profile from "./routes/Profile";
 import Loader from "./components/Loading";
 import { WishlistProvider } from "./components/WishlistContext";
 import { auth } from "./firebaseConfig";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      try {
-        if (currentUser) {
-          const emailDomain = currentUser.email.split('@')[1];
-          if (emailDomain !== 'thapar.edu') {
-            await signOut(auth);
-            localStorage.removeItem("user");
-            setUser(null);
-          } else {
-            setUser(currentUser);
-            localStorage.setItem("user", JSON.stringify(currentUser));
-          }
-        } else {
-          setUser(null);
-          localStorage.removeItem("user");
-        }
-      } catch (error) {
-        console.error("Error during authentication:", error);
-      } finally {
-        setIsLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        localStorage.setItem("user", JSON.stringify(currentUser));
+      } else {
+        setUser(null);
+        localStorage.removeItem("user");
       }
+      setIsLoading(false);
     });
 
     return () => unsubscribe();

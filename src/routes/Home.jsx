@@ -101,11 +101,9 @@ const Home = () => {
                 <option value="Books">Books</option>
                 <option value="Sports">Sports</option>
                 <option value="Stationery">Stationery</option>
-                <option value="Services">Services</option>
                 <option value="Furniture">Furniture</option>
                 <option value="Kitchenware">Kitchenware</option>
                 <option value="Accessories">Accessories</option>
-                <option value="Art Supplies">Art Supplies</option>
                 <option value="Bicycles">Bicycles</option>
                 <option value="Musical Instruments">Musical Instruments</option>
                 <option value="Room Decor">Home Decor</option>

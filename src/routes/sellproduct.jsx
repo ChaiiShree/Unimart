@@ -3,6 +3,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebaseConfig";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './sellproduct.css';
 
 function SellProduct() {
@@ -18,8 +20,6 @@ function SellProduct() {
     contactOption: "", // No default value for dropdown
     contactValue: "" // Store the value for Telegram username or WhatsApp number
   });
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   const [user] = useAuthState(auth); // Get the currently logged-in user
 
@@ -37,7 +37,7 @@ function SellProduct() {
     // Ensure the total size of images does not exceed 1.5MB
     const totalSize = files.reduce((acc, file) => acc + file.size, 0);
     if (totalSize > 1.5 * 1024 * 1024) {
-      setErrorMessage("Total file size exceeds 1.5MB. Please choose smaller files.");
+      toast.error("Total file size exceeds 1.5MB. Please choose smaller files.");
       return;
     }
 
@@ -55,7 +55,8 @@ function SellProduct() {
 
   const validateForm = () => {
     const { sellerName, productName, category, description, price, images, hostel, quantity, contactOption, contactValue } = formData;
-    if (!sellerName || !productName || !category || !description || !price || images.length === 0 || !hostel || !quantity || !contactOption || !contactValue) {
+    
+    if (!sellerName || !productName || !category || category === "" || !description || !price || images.length === 0 || !hostel || hostel === "" || !quantity || !contactOption || !contactValue) {
       return false;
     }
     return true;
@@ -65,7 +66,7 @@ function SellProduct() {
     e.preventDefault();
 
     if (!validateForm()) {
-      setErrorMessage("Please fill in all the required fields.");
+      toast.error("Please fill in all the required fields.");
       return;
     }
 
@@ -96,8 +97,7 @@ function SellProduct() {
 
       if (response.ok) {
         const responseData = await response.json();
-        setSuccessMessage(responseData.message || "Product Uploaded");
-        setErrorMessage("");
+        toast.success(responseData.message || "Product Uploaded");
         setFormData({
           sellerName: "",
           productName: "",
@@ -112,13 +112,11 @@ function SellProduct() {
         });
       } else {
         const errorData = await response.json();
-        setErrorMessage(errorData.message || "Something went wrong.");
-        setSuccessMessage("");
+        toast.error(errorData.message || "Something went wrong.");
       }
     } catch (error) {
       console.error("Error:", error);
-      setErrorMessage("Failed to upload product. Please try again.");
-      setSuccessMessage("");
+      toast.error("Failed to upload product. Please try again.");
     }
   };
 
@@ -127,8 +125,6 @@ function SellProduct() {
       <Navbar />
       <div className="sell-product-container">
         <h2>Sell Your Product</h2>
-        {successMessage && <p className="success-message">{successMessage}</p>}
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
         <form className="sell-product-form" onSubmit={handleSubmit}>
           <FormField
             label="Seller Name *"
@@ -173,35 +169,33 @@ function SellProduct() {
             value={formData.productName}
             onChange={handleChange}
           />
-          <FormField
-            label="Category *"
-            id="category"
-            name="category"
-            type="select"
-            required
-            value={formData.category}
-            onChange={handleChange}
-            options={[
-              { value: "", label: "Select Category" },
-              { value: "Electronics", label: "Electronics" },
-              { value: "Clothing", label: "Clothing" },
-              { value: "Books", label: "Books" },
-              { value: "Sports", label: "Sports" },
-              { value: "Stationery", label: "Stationery" },
-              { value: "Services", label: "Services" },
-              { value: "Furniture", label: "Furniture" },
-              { value: "Kitchenware", label: "Kitchenware" },
-              { value: "Accessories", label: "Accessories" },
-              { value: "Art Supplies", label: "Art Supplies" },
-              { value: "Bicycles", label: "Bicycles" },
-              { value: "Musical Instruments", label: "Musical Instruments" },
-              { value: "Room Decor", label: "Room Decor" },
-              { value: "Food Items", label: "Food Items" },
-              { value: "Health & Fitness", label: "Health & Fitness" },
-              { value: "Beauty & Personal Care", label: "Beauty & Personal Care" },
-              { value: "Others", label: "Others" }
-            ]}
-          />
+<FormField
+  label="Category *"
+  id="category"
+  name="category"
+  type="select"
+  required
+  value={formData.category}
+  onChange={handleChange}
+  options={[
+    { value: "", label: "Select Category" },
+    { value: "Electronics", label: "Electronics" },
+    { value: "Clothing", label: "Clothing" },
+    { value: "Books", label: "Books" },
+    { value: "Sports", label: "Sports" },
+    { value: "Stationery", label: "Stationery" },
+    { value: "Furniture", label: "Furniture" },
+    { value: "Kitchenware", label: "Kitchenware" },
+    { value: "Accessories", label: "Accessories" },
+    { value: "Bicycles", label: "Bicycles" },
+    { value: "Musical Instruments", label: "Musical Instruments" },
+    { value: "Room Decor", label: "Room Decor" },
+    { value: "Food Items", label: "Food Items" },
+    { value: "Health & Fitness", label: "Health & Fitness" },
+    { value: "Beauty & Personal Care", label: "Beauty & Personal Care" },
+    { value: "Others", label: "Others" }
+  ]}
+/>
           <FormField
             label="Description *"
             id="description"
@@ -230,34 +224,38 @@ function SellProduct() {
             required
             onChange={handleFileChange}
           />
-          <FormField
-            label="Hostel *"
-            id="hostel"
-            name="hostel"
-            type="select"
-            required
-            value={formData.hostel}
-            onChange={handleChange}
-            options={[
-              { value: "", label: "Select Hostel" },
-              { value: "A", label: "A" },
-              { value: "B", label: "B" },
-              { value: "C", label: "C" },
-              { value: "D", label: "D" },
-              { value: "E", label: "E" },
-              { value: "G", label: "G" },
-              { value: "H", label: "H" },
-              { value: "I", label: "I" },
-              { value: "J", label: "J" },
-              { value: "K", label: "K" },
-              { value: "L", label: "L" },
-              { value: "M", label: "M" },
-              { value: "N", label: "N" },
-              { value: "O", label: "O" },
-              { value: "PG", label: "PG" },
-              { value: "Q", label: "Q" }
-            ]}
-          />
+<FormField
+  label="Hostel *"
+  id="hostel"
+  name="hostel"
+  type="select"
+  required
+  value={formData.hostel}
+  onChange={handleChange}
+  options={[
+    { value: "", label: "Select Hostel" },
+    { value: "A", label: "A" },
+    { value: "B", label: "B" },
+    { value: "C", label: "C" },
+    { value: "D", label: "D" },
+    { value: "E", label: "E" },
+    { value: "G", label: "G" },
+    { value: "H", label: "H" },
+    { value: "I", label: "I" },
+    { value: "J", label: "J" },
+    { value: "K", label: "K" },
+    { value: "L", label: "L" },
+    { value: "M", label: "M" },
+    { value: "N", label: "N" },
+    { value: "O", label: "O" },
+    { value: "PG", label: "PG" },
+    { value: "Q", label: "Q" },
+    { value: "R", label: "R" },
+    { value: "S", label: "S" },
+    { value: "T", label: "T" },
+    { value: "U", label: "U" }
+  ]}
+/>
           <FormField
             label="Quantity *"
             id="quantity"
@@ -267,47 +265,43 @@ function SellProduct() {
             value={formData.quantity}
             onChange={handleChange}
           />
-          <button type="submit">Upload</button>
+          <button type="submit" className="submit-button">Upload Product</button>
         </form>
       </div>
       <Footer />
+      <ToastContainer />
     </>
   );
 }
 
-const FormField = ({ label, id, name, type, value, onChange, required, accept, options }) => {
+function FormField({ label, id, name, type, value, onChange, options, required, accept, multiple }) {
   return (
     <div className="form-group">
       <label htmlFor={id}>{label}</label>
-      {type === "select" ? (
+      {type === 'select' ? (
         <select id={id} name={name} value={value} onChange={onChange} required={required}>
-          {options.map((option, index) => (
-            <option key={index} value={option.value || option}>
-              {option.label || option}
+          {options.map(option => (
+            <option key={option.value} value={option.value}>
+              {option.label}
             </option>
           ))}
         </select>
-      ) : type === "textarea" ? (
-        <textarea
-          id={id}
-          name={name}
-          value={value}
-          onChange={onChange}
-          required={required}
-        />
+      ) : type === 'textarea' ? (
+        <textarea id={id} name={name} value={value} onChange={onChange} required={required} />
       ) : (
         <input
-          type={type}
           id={id}
           name={name}
+          type={type}
           value={value}
           onChange={onChange}
           required={required}
           accept={accept}
+          multiple={multiple}
         />
       )}
     </div>
   );
-};
+}
 
 export default SellProduct;
