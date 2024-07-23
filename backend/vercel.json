@@ -1,0 +1,19 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "backend/index.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "backend/index.js"
+      }
+    ],
+    "env": {
+      "MONGO_URI":"mongodb+srv://email_id:cheti_boi@cluster0.qadd5ht.mongodb.net/"
+    }
+  }
+  
