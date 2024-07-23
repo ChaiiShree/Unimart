@@ -61,7 +61,6 @@ wishlistSchema.index({ userId: 1, productName: 1 }, { unique: true });
 
 const Wishlist = mongoose.model('Wishlist', wishlistSchema);
 
-
 // User Schema
 const userSchema = new mongoose.Schema({
   uid: { type: String, required: true, unique: true },
