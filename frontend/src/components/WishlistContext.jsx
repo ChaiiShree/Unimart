@@ -15,7 +15,7 @@ export const WishlistProvider = ({ children }) => {
     const fetchWishlist = async () => {
       if (user) {
         try {
-          const response = await axios.get(`http://localhost:5000/api/wishlist/${user.uid}`);
+          const response = await axios.get(`https://uniipal.vercel.app/api/wishlist/${user.uid}`);
           setWishlist(response.data);
         } catch (error) {
           console.error('Error fetching wishlist:', error);
@@ -37,7 +37,7 @@ export const WishlistProvider = ({ children }) => {
           return { success: false, message: 'Item already in wishlist' };
         }
         
-        const response = await axios.post('http://localhost:5000/api/wishlist/add', {
+        const response = await axios.post('https://uniipal.vercel.app/api/wishlist/add', {
           ...item,
           userId: user.uid,
         });
@@ -53,7 +53,7 @@ export const WishlistProvider = ({ children }) => {
   const removeFromWishlist = async (itemId) => {
     if (user) {
       try {
-        await axios.delete(`http://localhost:5000/api/wishlist/remove/${itemId}`);
+        await axios.delete(`https://uniipal.vercel.app/api/wishlist/remove/${itemId}`);
         setWishlist(wishlist.filter((item) => item._id !== itemId));
       } catch (error) {
         console.error('Error removing from wishlist:', error);
