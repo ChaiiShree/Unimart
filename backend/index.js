@@ -75,6 +75,11 @@ const User = mongoose.model('User', userSchema);
 
 // Routes
 
+// Root route handler
+app.get('/', (req, res) => {
+  res.send('Welcome to the Uniipal Backend API');
+});
+
 // Subscription Route
 app.post('/api/subscribe', async (req, res) => {
   const { email } = req.body;
