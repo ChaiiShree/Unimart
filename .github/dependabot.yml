@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: "npm" # Specify the package manager for the main project
-    directory: "/" # Root directory for the main project's package.json
+    directory: "/frontend" # Root directory for the main project's package.json
     schedule:
       interval: "weekly"
 
