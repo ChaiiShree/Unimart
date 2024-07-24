@@ -87,7 +87,7 @@ function SellProduct() {
     };
 
     try {
-      const response = await fetch("https://uniipal.vercel.app/api/products", {
+      const response = await fetch("http://localhost:5000/api/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -249,11 +249,7 @@ function SellProduct() {
     { value: "N", label: "N" },
     { value: "O", label: "O" },
     { value: "PG", label: "PG" },
-    { value: "Q", label: "Q" },
-    { value: "R", label: "R" },
-    { value: "S", label: "S" },
-    { value: "T", label: "T" },
-    { value: "U", label: "U" }
+    { value: "Q", label: "Q" }
   ]}
 />
           <FormField

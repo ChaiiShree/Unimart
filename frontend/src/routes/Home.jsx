@@ -18,13 +18,16 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("https://uniipal.vercel.app/api/products");
-        if (response.ok) {
-          const data = await response.json();
+        const response = await fetch("http://localhost:5000/api/products");
+        const text = await response.text();
+        
+        try {
+          const data = JSON.parse(text);
           setProducts(data);
           setFilteredProducts(data); // Initialize filtered products
-        } else {
-          console.error("Failed to fetch products");
+        } catch (parseError) {
+          console.error("Error parsing JSON:", parseError);
+          console.error("Response text:", text);
         }
       } catch (error) {
         console.error("Error fetching products:", error);

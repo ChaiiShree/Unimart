@@ -19,7 +19,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`https://uniipal.vercel.app/api/user/${user.uid}`);
+        const response = await fetch(`http://localhost:5000/api/user/${user.uid}`);
         if (response.ok) {
           const data = await response.json();
           setUserData(data);
@@ -39,7 +39,7 @@ const Profile = () => {
 
     const fetchUserProducts = async () => {
       try {
-        const response = await fetch(`https://uniipal.vercel.app/api/products/user/${user.uid}`);
+        const response = await fetch(`http://localhost:5000/api/products/user/${user.uid}`);
         if (response.ok) {
           const data = await response.json();
           setProducts(data);
@@ -68,7 +68,7 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`https://uniipal.vercel.app/api/user/${user.uid}`, {
+      const response = await fetch(`http://localhost:5000/api/user/${user.uid}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +91,7 @@ const Profile = () => {
     const confirmDelete = window.confirm(`Are you sure you want to delete "${productName}"?`);
     if (confirmDelete) {
       try {
-        const response = await fetch(`https://uniipal.vercel.app/api/products/${productId}`, {
+        const response = await fetch(`http://localhost:5000/api/products/${productId}`, {
           method: "DELETE",
         });
         if (response.ok) {

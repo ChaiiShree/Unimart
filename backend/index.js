@@ -9,18 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-const allowedOrigins = ['https://uniipal-frontend.vercel.app',"https://uniipal.vercel.app","http://localhost:5173/"];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-}));
-
+app.use(cors());
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -85,11 +74,6 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 // Routes
-
-// Root route handler
-app.get('/', (req, res) => {
-  res.send('Welcome to the Uniipal Backend API');
-});
 
 // Subscription Route
 app.post('/api/subscribe', async (req, res) => {
