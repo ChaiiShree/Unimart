@@ -1,4 +1,3 @@
-// Navbar.jsx
 import React, { useState, useEffect } from "react";
 import "./NavbarStyles.css";
 import { MenuItems } from "./MenuItems";
@@ -34,7 +33,13 @@ const Navbar = ({ onSearch }) => {
   const handleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      setUser(result.user);
+      const email = result.user.email;
+      if (email.endsWith("@thapar.edu")) {
+        setUser(result.user);
+      } else {
+        alert("Only Thapar.edu email addresses are allowed to log in.");
+        await signOut(auth);
+      }
     } catch (error) {
       console.error("Error logging in:", error);
     }

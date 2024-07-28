@@ -14,12 +14,11 @@ const Home = () => {
   const [hostel, setHostel] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [searchText, setSearchText] = useState(""); // State for search text
-  const backendUrl = 'https://uniipal.vercel.app'; // Replace with your Vercel backend URL
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${backendUrl}/api/products`);
+        const response = await fetch("http://localhost:5000/api/products");
         const text = await response.text();
         
         try {
@@ -36,7 +35,7 @@ const Home = () => {
     };
 
     fetchProducts();
-  }, [backendUrl]);
+  }, []);
 
   useEffect(() => {
     filterProducts();

@@ -1,8 +1,7 @@
+// Footer.jsx
 import React, { useState } from "react";
 import axios from "axios";
 import "./FooterStyles.css";
-
-const backendUrl = "https://uniipal.vercel.app"; // Updated backend URL
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -13,7 +12,7 @@ const Footer = () => {
 
   const handleJoinClick = async () => {
     try {
-      const response = await axios.post(`${backendUrl}/api/subscribe`, { email });
+      const response = await axios.post("http://localhost:5000/api/subscribe", { email });
       alert("Thank you for joining our community!");
       setEmail("");
     } catch (error) {
@@ -32,7 +31,7 @@ const Footer = () => {
         <div>
           <h1 className="footer-title">JOIN OUR COMMUNITY</h1>
           <p className="footer-subtitle">
-            Be the first to hear about our newest products
+            Be the first to hear about our Newest Products
           </p>
           <div className="email-container">
             <input
@@ -54,13 +53,13 @@ const Footer = () => {
           <h4>Stay in the know</h4>
           <p>Follow our socials</p>
           <div className="social-links">
-            <a href="https://www.instagram.com/uniipal?igsh=aXAybTloMXZ3aTZh&utm_source=qr" target="_blank" rel="noopener noreferrer">
+          <a href=" https://www.instagram.com/uniipal?igsh=aXAybTloMXZ3aTZh&utm_source=qr " target="_blank" rel="noopener noreferrer">
               <i className="fa-brands fa-instagram"></i>
             </a>
             <a href="mailto:unipalmark@gmail.com" target="_blank" rel="noopener noreferrer">
-              <i className="fa-solid fa-envelope"></i>
-            </a>
-            <a href="https://x.com/uniipal" target="_blank" rel="noopener noreferrer">
+    <i className="fa-solid fa-envelope"></i>
+</a>
+            <a href="https://x.com/uniipal " target="_blank" rel="noopener noreferrer">
               <i className="fa-brands fa-twitter"></i>
             </a>
             <a href="https://www.linkedin.com/in/unipal-marketplace/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" rel="noopener noreferrer">

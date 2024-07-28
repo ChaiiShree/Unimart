@@ -11,21 +11,22 @@ const Profile = () => {
   const [products, setProducts] = useState([]); // State to store user products
   const [isEditing, setIsEditing] = useState(false); // State to track if the user is entering data
   const [formData, setFormData] = useState({
+    name: "", // Add name to form data
     rollNumber: "",
     branch: "",
     passingOutYear: "",
   }); // State to store form data
-  const backendUrl = 'https://uniipal.vercel.app'; // Replace with your Vercel backend URL
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`${backendUrl}/api/user/${user.uid}`);
+        const response = await fetch(`http://localhost:5000/api/user/${user.uid}`);
         if (response.ok) {
           const data = await response.json();
           setUserData(data);
           // Populate form data from fetched user data
           setFormData({
+            name: data.name || "", // Populate name
             rollNumber: data.rollNumber || "",
             branch: data.branch || "",
             passingOutYear: data.passingOutYear || "",
@@ -40,7 +41,7 @@ const Profile = () => {
 
     const fetchUserProducts = async () => {
       try {
-        const response = await fetch(`${backendUrl}/api/products/user/${user.uid}`);
+        const response = await fetch(`http://localhost:5000/api/products/user/${user.uid}`);
         if (response.ok) {
           const data = await response.json();
           setProducts(data);
@@ -56,7 +57,7 @@ const Profile = () => {
       fetchUserData();
       fetchUserProducts();
     }
-  }, [user, backendUrl]);
+  }, [user]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -69,7 +70,7 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${backendUrl}/api/user/${user.uid}`, {
+      const response = await fetch(`http://localhost:5000/api/user/${user.uid}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -92,7 +93,7 @@ const Profile = () => {
     const confirmDelete = window.confirm(`Are you sure you want to delete "${productName}"?`);
     if (confirmDelete) {
       try {
-        const response = await fetch(`${backendUrl}/api/products/${productId}`, {
+        const response = await fetch(`http://localhost:5000/api/products/${productId}`, {
           method: "DELETE",
         });
         if (response.ok) {
@@ -139,6 +140,14 @@ const Profile = () => {
                   <form onSubmit={handleSubmit}>
                     <input
                       type="text"
+                      name="name"
+                      placeholder="Name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                    />
+                    <input
+                      type="text"
                       name="rollNumber"
                       placeholder="Roll Number"
                       value={formData.rollNumber}
@@ -172,7 +181,9 @@ const Profile = () => {
             <ul className="product-list">
               {products.map((product) => (
                 <li key={product._id} className="product-item">
-                  <img src={`data:image/jpeg;base64,${product.images[0]}`} alt={product.productName} className="product-image" />
+                  <img src={`data:image/jpeg;base64,${product.images[0]}`} // Assuming first image for simplicity
+          alt={product.productName}
+          className="product-image" />
                   <div className="product-details">
                     <h3>{product.productName}</h3>
                     <p>{product.description}</p>

@@ -1,6 +1,5 @@
-// src/App.jsx
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import Home from "./routes/Home";
 import About from "./routes/About";
 import SellProduct from "./routes/sellproduct";
@@ -8,18 +7,24 @@ import Wishlist from "./components/Wishlist";
 import Profile from "./routes/Profile";
 import Loader from "./components/Loading";
 import { WishlistProvider } from "./components/WishlistContext";
-import { auth } from "./firebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
+import { auth, provider } from "./firebaseConfig";
+import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [authError, setAuthError] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        setUser(currentUser);
-        localStorage.setItem("user", JSON.stringify(currentUser));
+        if (currentUser.email.endsWith("@thapar.edu")) {
+          setUser(currentUser);
+          localStorage.setItem("user", JSON.stringify(currentUser));
+        } else {
+          setAuthError("Only Thapar.edu email addresses are allowed to log in.");
+          handleLogout();
+        }
       } else {
         setUser(null);
         localStorage.removeItem("user");
@@ -29,6 +34,15 @@ function App() {
 
     return () => unsubscribe();
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
   if (isLoading) {
     return <Loader setIsLoading={setIsLoading} />;

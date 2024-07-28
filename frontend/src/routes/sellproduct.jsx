@@ -7,8 +7,6 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './sellproduct.css';
 
-const backendUrl = "https://uniipal.vercel.app"; // Updated backend URL
-
 function SellProduct() {
   const [formData, setFormData] = useState({
     sellerName: "",
@@ -89,7 +87,7 @@ function SellProduct() {
     };
 
     try {
-      const response = await fetch(`${backendUrl}/api/products`, {
+      const response = await fetch("http://localhost:5000/api/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -171,33 +169,33 @@ function SellProduct() {
             value={formData.productName}
             onChange={handleChange}
           />
-          <FormField
-            label="Category *"
-            id="category"
-            name="category"
-            type="select"
-            required
-            value={formData.category}
-            onChange={handleChange}
-            options={[
-              { value: "", label: "Select Category" },
-              { value: "Electronics", label: "Electronics" },
-              { value: "Clothing", label: "Clothing" },
-              { value: "Books", label: "Books" },
-              { value: "Sports", label: "Sports" },
-              { value: "Stationery", label: "Stationery" },
-              { value: "Furniture", label: "Furniture" },
-              { value: "Kitchenware", label: "Kitchenware" },
-              { value: "Accessories", label: "Accessories" },
-              { value: "Bicycles", label: "Bicycles" },
-              { value: "Musical Instruments", label: "Musical Instruments" },
-              { value: "Room Decor", label: "Room Decor" },
-              { value: "Food Items", label: "Food Items" },
-              { value: "Health & Fitness", label: "Health & Fitness" },
-              { value: "Beauty & Personal Care", label: "Beauty & Personal Care" },
-              { value: "Others", label: "Others" }
-            ]}
-          />
+<FormField
+  label="Category *"
+  id="category"
+  name="category"
+  type="select"
+  required
+  value={formData.category}
+  onChange={handleChange}
+  options={[
+    { value: "", label: "Select Category" },
+    { value: "Electronics", label: "Electronics" },
+    { value: "Clothing", label: "Clothing" },
+    { value: "Books", label: "Books" },
+    { value: "Sports", label: "Sports" },
+    { value: "Stationery", label: "Stationery" },
+    { value: "Furniture", label: "Furniture" },
+    { value: "Kitchenware", label: "Kitchenware" },
+    { value: "Accessories", label: "Accessories" },
+    { value: "Bicycles", label: "Bicycles" },
+    { value: "Musical Instruments", label: "Musical Instruments" },
+    { value: "Room Decor", label: "Room Decor" },
+    { value: "Food Items", label: "Food Items" },
+    { value: "Health & Fitness", label: "Health & Fitness" },
+    { value: "Beauty & Personal Care", label: "Beauty & Personal Care" },
+    { value: "Others", label: "Others" }
+  ]}
+/>
           <FormField
             label="Description *"
             id="description"
@@ -226,34 +224,34 @@ function SellProduct() {
             required
             onChange={handleFileChange}
           />
-          <FormField
-            label="Hostel *"
-            id="hostel"
-            name="hostel"
-            type="select"
-            required
-            value={formData.hostel}
-            onChange={handleChange}
-            options={[
-              { value: "", label: "Select Hostel" },
-              { value: "A", label: "A" },
-              { value: "B", label: "B" },
-              { value: "C", label: "C" },
-              { value: "D", label: "D" },
-              { value: "E", label: "E" },
-              { value: "G", label: "G" },
-              { value: "H", label: "H" },
-              { value: "I", label: "I" },
-              { value: "J", label: "J" },
-              { value: "K", label: "K" },
-              { value: "L", label: "L" },
-              { value: "M", label: "M" },
-              { value: "N", label: "N" },
-              { value: "O", label: "O" },
-              { value: "PG", label: "PG" },
-              { value: "Q", label: "Q" }
-            ]}
-          />
+<FormField
+  label="Hostel *"
+  id="hostel"
+  name="hostel"
+  type="select"
+  required
+  value={formData.hostel}
+  onChange={handleChange}
+  options={[
+    { value: "", label: "Select Hostel" },
+    { value: "A", label: "A" },
+    { value: "B", label: "B" },
+    { value: "C", label: "C" },
+    { value: "D", label: "D" },
+    { value: "E", label: "E" },
+    { value: "G", label: "G" },
+    { value: "H", label: "H" },
+    { value: "I", label: "I" },
+    { value: "J", label: "J" },
+    { value: "K", label: "K" },
+    { value: "L", label: "L" },
+    { value: "M", label: "M" },
+    { value: "N", label: "N" },
+    { value: "O", label: "O" },
+    { value: "PG", label: "PG" },
+    { value: "Q", label: "Q" }
+  ]}
+/>
           <FormField
             label="Quantity *"
             id="quantity"
@@ -265,29 +263,41 @@ function SellProduct() {
           />
           <button type="submit" className="submit-button">Upload Product</button>
         </form>
-        <ToastContainer />
       </div>
       <Footer />
+      <ToastContainer />
     </>
   );
 }
 
-// Helper component for form fields
-const FormField = ({ label, id, name, type, required, value, onChange, options }) => (
-  <div className="form-field">
-    <label htmlFor={id}>{label}</label>
-    {type === "select" ? (
-      <select id={id} name={name} required={required} value={value} onChange={onChange}>
-        {options.map(option => (
-          <option key={option.value} value={option.value}>{option.label}</option>
-        ))}
-      </select>
-    ) : type === "textarea" ? (
-      <textarea id={id} name={name} required={required} value={value} onChange={onChange}></textarea>
-    ) : (
-      <input id={id} name={name} type={type} required={required} value={value} onChange={onChange} />
-    )}
-  </div>
-);
+function FormField({ label, id, name, type, value, onChange, options, required, accept, multiple }) {
+  return (
+    <div className="form-group">
+      <label htmlFor={id}>{label}</label>
+      {type === 'select' ? (
+        <select id={id} name={name} value={value} onChange={onChange} required={required}>
+          {options.map(option => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      ) : type === 'textarea' ? (
+        <textarea id={id} name={name} value={value} onChange={onChange} required={required} />
+      ) : (
+        <input
+          id={id}
+          name={name}
+          type={type}
+          value={value}
+          onChange={onChange}
+          required={required}
+          accept={accept}
+          multiple={multiple}
+        />
+      )}
+    </div>
+  );
+}
 
 export default SellProduct;

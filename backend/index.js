@@ -9,12 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-const corsOptions = {
-  origin: ['https://uniipal-frontend.vercel.app', 'http://localhost:5173', 'http://localhost:5000','https://uniipal.vercel.app'],
-  optionsSuccessStatus: 200 // Some legacy browsers (IE11, various SmartTVs) choke on 204
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -74,8 +69,9 @@ const userSchema = new mongoose.Schema({
   rollNumber: { type: String },
   branch: { type: String },
   passingOutYear: { type: Number },
+  suspendedUntil: { type: Date, default: null },
+  isBlocked: { type: Boolean, default: false },
 });
-
 const User = mongoose.model('User', userSchema);
 
 // Routes
@@ -194,14 +190,11 @@ app.get('/api/user/:uid', async (req, res) => {
   try {
     const { uid } = req.params;
     let user = await User.findOne({ uid });
-
     if (!user) {
-      // If user doesn't exist, create a new user entry
       const newUser = new User({ uid });
       await newUser.save();
-      user = newUser; // Set user to the newly created user
+      user = newUser;
     }
-
     res.status(200).json(user);
   } catch (error) {
     console.error('Error fetching/creating user:', error);
@@ -214,16 +207,12 @@ app.put('/api/user/:uid', async (req, res) => {
   try {
     const { uid } = req.params;
     const { name, email, rollNumber, branch, passingOutYear } = req.body;
-
     let user = await User.findOne({ uid });
-
     if (!user) {
-      // If user doesn't exist, create a new user entry
       const newUser = new User({ uid, name, email, rollNumber, branch, passingOutYear });
       await newUser.save();
-      user = newUser; // Set user to the newly created user
+      user = newUser;
     } else {
-      // Update existing user details
       user.name = name;
       user.email = email;
       user.rollNumber = rollNumber;
@@ -231,11 +220,112 @@ app.put('/api/user/:uid', async (req, res) => {
       user.passingOutYear = passingOutYear;
       await user.save();
     }
-
     res.status(200).json(user);
   } catch (error) {
     console.error('Error updating user details:', error);
     res.status(500).json({ message: `Error updating user details: ${error.message}` });
+  }
+});
+
+// Suspend User Route
+app.put('/api/user/suspend/:uid', async (req, res) => {
+  try {
+    const { uid } = req.params;
+    const suspensionDuration = 7; // days
+    const suspendedUntil = new Date();
+    suspendedUntil.setDate(suspendedUntil.getDate() + suspensionDuration);
+
+    const user = await User.findOneAndUpdate(
+      { uid },
+      { suspendedUntil },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'User suspended successfully', user });
+  } catch (error) {
+    console.error('Error suspending user:', error);
+    res.status(500).json({ message: `Error suspending user: ${error.message}` });
+  }
+});
+
+// Block User Route
+app.put('/api/user/block/:uid', async (req, res) => {
+  try {
+    const { uid } = req.params;
+
+    const user = await User.findOneAndUpdate(
+      { uid },
+      { isBlocked: true },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'User blocked successfully', user });
+  } catch (error) {
+    console.error('Error blocking user:', error);
+    res.status(500).json({ message: `Error blocking user: ${error.message}` });
+  }
+});
+
+// Unblock User Route
+app.put('/api/user/unblock/:uid', async (req, res) => {
+  try {
+    const { uid } = req.params;
+
+    const user = await User.findOneAndUpdate(
+      { uid },
+      { isBlocked: false },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'User unblocked successfully', user });
+  } catch (error) {
+    console.error('Error unblocking user:', error);
+    res.status(500).json({ message: `Error unblocking user: ${error.message}` });
+  }
+});
+
+// Unsuspend User Route
+app.put('/api/user/unsuspend/:uid', async (req, res) => {
+  try {
+    const { uid } = req.params;
+
+    const user = await User.findOneAndUpdate(
+      { uid },
+      { suspendedUntil: null },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'User unsuspended successfully', user });
+  } catch (error) {
+    console.error('Error unsuspending user:', error);
+    res.status(500).json({ message: `Error unsuspending user: ${error.message}` });
+  }
+});
+
+// Fetch all users
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ message: `Error fetching users: ${error.message}` });
   }
 });
 
