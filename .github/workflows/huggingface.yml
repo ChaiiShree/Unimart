@@ -6,6 +6,7 @@ on:
       - 'backend/**'
     branches:
       - main
+  workflow_dispatch:  # Allows the workflow to be manually triggered
 
 jobs:
   push-to-hf:
@@ -20,13 +21,14 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-      - name: Push to Hugging Face
+      - name: Initialize and Push to Hugging Face
         run: |
           cd backend
           git init
+          git checkout -b master
           git remote add origin https://huggingface.co/spaces/unipalmark/backend
           git add .
-          git commit -m "Update backend"
+          git commit -m "Initial commit"
           git push origin main --force
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
