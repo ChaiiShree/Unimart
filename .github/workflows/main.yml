@@ -23,8 +23,8 @@ jobs:
 
       - name: Configure Git Credentials
         run: |
-          echo "https://unipalmark:${{ secrets.GIT_PASS }}@github.com" > ~/.git-credentials
           git config --global credential.helper store
+          echo "https://unipalmark:${{ secrets.GIT_PASS }}@github.com" > ~/.git-credentials
 
       - name: Initialize and Push to Another Repository
         run: |
