@@ -25,7 +25,7 @@ jobs:
         run: |
           cd frontend
           git init
-          git checkout -b main  # Use 'main' branch; change if needed
+          git checkout -b main
           git remote add origin https://unipalmark:${{ secrets.GIT_PASS }}@github.com/unipalmark/unipal-frontend.git
 
           # Configure Git to use credentials
