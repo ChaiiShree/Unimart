@@ -13,7 +13,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(""); 
   const [hostel, setHostel] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [searchText, setSearchText] = useState(""); // State for search text
@@ -144,7 +144,6 @@ const Home = () => {
         </div>
         <div className="products-grid">
           {loading ? <Loader />: renderProducts()}
-          {renderProducts()}
         </div>
       </div>
       <Footer />
