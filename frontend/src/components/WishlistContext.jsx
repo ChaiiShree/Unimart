@@ -53,6 +53,7 @@ export const WishlistProvider = ({ children }) => {
     if (user) {
       try {
         const response = await axios.delete(`${BACKEND_URL}api/wishlist/remove/${itemId}`);
+        
         if (response.status === 200) {
           setWishlist(wishlist.filter((item) => item._id !== itemId));
         } else {
@@ -61,9 +62,11 @@ export const WishlistProvider = ({ children }) => {
       } catch (error) {
         console.error('Error removing from wishlist:', error.message);
         // Optionally display a toast or alert to notify the user
+        toast.error('Error removing item from wishlist');
       }
     }
   };
+  
 
   return (
     <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist }}>
