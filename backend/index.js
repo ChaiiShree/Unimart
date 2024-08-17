@@ -270,7 +270,7 @@ app.put('/api/user/block/:uid', async (req, res) => {
     res.status(200).json({ message: 'User blocked successfully', user });
   } catch (error) {
     console.error('Error blocking user:', error);
-    res.status(500).json({ message: `Error blocking user: ${error.message}` });
+    res.status(500).json({ message: `Error blocking user from shopping: ${error.message}` });
   }
 });
 
