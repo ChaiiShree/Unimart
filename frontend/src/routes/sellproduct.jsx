@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './sellproduct.css';
+import { BACKEND_URL } from "../config";
 
 function SellProduct() {
   const [formData, setFormData] = useState({
