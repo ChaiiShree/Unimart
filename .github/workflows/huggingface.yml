@@ -25,10 +25,15 @@ jobs:
         run: |
           cd backend
           git init
-          git branch -m main  # Rename the branch from 'master' to 'main'
+          git checkout -b main  # Use 'main' branch; change if needed
           git remote add origin https://huggingface.co/spaces/unipalmark/backend
+
+          # Configure Git to use credentials
+          git config credential.helper store
+          echo "https://unipalmark:${{ secrets.HF_TOKEN }}@huggingface.co" > ~/.git-credentials
+
           git add .
           git commit -m "Initial commit"
-          git push origin main --force  # Push to the 'main' branch
+          git push origin main --force
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
