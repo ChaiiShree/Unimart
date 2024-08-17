@@ -96,7 +96,7 @@ app.post('/api/subscribe', async (req, res) => {
 });
 
 
-app.get('api/products/:id/image/:srno', async (req, res) => {
+app.get('/api/products/:id/image/:srno', async (req, res) => {
   try {
     const { id } = req.params;
     const { srno } = req.params;
