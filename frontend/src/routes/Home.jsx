@@ -6,9 +6,11 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./Home.css";
 import { BACKEND_URL } from "../config";
+import Loader from "../components/Loading";
 
 const Home = () => {
   const { addToWishlist } = useWishlist();
+  const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [category, setCategory] = useState("");
@@ -26,6 +28,7 @@ const Home = () => {
           const data = JSON.parse(text);
           setProducts(data);
           setFilteredProducts(data); // Initialize filtered products
+          setLoading(false);
         } catch (parseError) {
           console.error("Error parsing JSON:", parseError);
           console.error("Response text:", text);
@@ -140,6 +143,7 @@ const Home = () => {
           )}
         </div>
         <div className="products-grid">
+          {loading ? <Loader />: renderProducts()}
           {renderProducts()}
         </div>
       </div>
