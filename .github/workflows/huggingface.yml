@@ -25,10 +25,10 @@ jobs:
         run: |
           cd backend
           git init
-          git checkout -b master
+          git branch -m main  # Rename the branch from 'master' to 'main'
           git remote add origin https://huggingface.co/spaces/unipalmark/backend
           git add .
           git commit -m "Initial commit"
-          git push origin main --force
+          git push origin main --force  # Push to the 'main' branch
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
