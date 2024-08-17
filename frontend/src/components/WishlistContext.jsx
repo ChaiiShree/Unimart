@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebaseConfig'; // Your Firebase configuration file
 import { BACKEND_URL } from '../config'; // Ensure BACKEND_URL does not have a trailing slash
+import { toast } from 'react-toastify'; // Import toast here
 
 const WishlistContext = createContext();
 
@@ -19,7 +20,7 @@ export const WishlistProvider = ({ children }) => {
           const response = await axios.get(`${BACKEND_URL}api/wishlist/${user.uid}`);
           setWishlist(response.data);
         } catch (error) {
-          console.error('Error fetching wishlist:', error.message);
+          console.error('Error fetching wishlist:', error);
         }
       }
     };
@@ -43,7 +44,7 @@ export const WishlistProvider = ({ children }) => {
         setWishlist([...wishlist, response.data]);
         return { success: true };
       } catch (error) {
-        console.error('Error adding to wishlist:', error.message);
+        console.error('Error adding to wishlist:', error);
         return { success: false, message: 'Error adding item to wishlist' };
       }
     }
@@ -56,17 +57,16 @@ export const WishlistProvider = ({ children }) => {
         
         if (response.status === 200) {
           setWishlist(wishlist.filter((item) => item._id !== itemId));
+          toast.success('Item removed from wishlist'); // Use toast to show success message
         } else {
           throw new Error('Failed to remove item from wishlist');
         }
       } catch (error) {
         console.error('Error removing from wishlist:', error.message);
-        // Optionally display a toast or alert to notify the user
-        toast.error('Error removing item from wishlist');
+        toast.error('Error removing item from wishlist'); // Use toast to show error message
       }
     }
   };
-  
 
   return (
     <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist }}>
