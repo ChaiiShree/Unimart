@@ -10,11 +10,9 @@ const Wishlist = () => {
   const renderWishlistItems = () => {
     return wishlist.map((item) => (
       <div key={item._id} className="wishlist-item">
-        {/* Assuming item.images is an array of base64 encoded strings */}
         {item.images.map((image, index) => (
           <img
             key={index}
-            // src={`data:image/jpeg;base64,${image}`}
             src={`${image}`}
             alt={`${item.productName}-${index}`}
             className="wishlist-image"
