@@ -54,7 +54,7 @@ export const WishlistProvider = ({ children }) => {
   const removeFromWishlist = async (itemId) => {
     if (user) {
       try {
-        await axios.delete( BACKEND_URL + `api/wishlist/remove/${itemId}`);
+        await axios.delete(`${BACKEND_URL}/api/wishlist/remove/${itemId}`);
         setWishlist(wishlist.filter((item) => item._id !== itemId));
       } catch (error) {
         console.error('Error removing from wishlist:', error);
