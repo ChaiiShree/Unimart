@@ -13,7 +13,7 @@ const Footer = () => {
 
   const handleJoinClick = async () => {
     try {
-      const response = await axios.post(BACKEND_URL + "/api/subscribe", { email });
+      const response = await axios.post(BACKEND_URL + "api/subscribe", { email });
       alert("Thank you for joining our community!");
       setEmail("");
     } catch (error) {

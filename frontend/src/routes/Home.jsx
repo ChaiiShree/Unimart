@@ -10,7 +10,7 @@ import Loader from "../components/Loading";
 
 const Home = () => {
   const { addToWishlist } = useWishlist();
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [category, setCategory] = useState(""); 
@@ -143,7 +143,7 @@ const Home = () => {
           )}
         </div>
         <div className="products-grid">
-          {loading ? <Loader />: renderProducts()}
+          {/* {loading ? <Loader />: renderProducts()} */}
         </div>
       </div>
       <Footer />
