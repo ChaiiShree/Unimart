@@ -6,11 +6,9 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./Home.css";
 import { BACKEND_URL } from "../config";
-import Loader from "../components/Loading";
 
 const Home = () => {
   const { addToWishlist } = useWishlist();
-  const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [category, setCategory] = useState(""); 
@@ -21,14 +19,13 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch( BACKEND_URL + "api/products");
+        const response = await fetch(BACKEND_URL + "api/products");
         const text = await response.text();
         
         try {
           const data = JSON.parse(text);
           setProducts(data);
           setFilteredProducts(data); // Initialize filtered products
-          setLoading(false);
         } catch (parseError) {
           console.error("Error parsing JSON:", parseError);
           console.error("Response text:", text);
@@ -81,7 +78,7 @@ const Home = () => {
   const renderProducts = () => {
     return filteredProducts.map((product) => (
       <div key={product._id} className="product-card">
-        {/* <img src={`data:image/jpeg;base64,${product.images[0]}`} alt={product.productName} className="product-image" /> */}
+        {/* <img src={data:image/jpeg;base64,${product.images[0]}} alt={product.productName} className="product-image" /> */}
         <img src={`${product.images[0]}`} alt={product.productName} className="product-image" />
         <div className="product-details">
           <h2>{product.productName}</h2>
@@ -143,7 +140,7 @@ const Home = () => {
           )}
         </div>
         <div className="products-grid">
-          {loading ? <Loader />: renderProducts()}
+          {renderProducts()}
         </div>
       </div>
       <Footer />

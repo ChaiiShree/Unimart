@@ -19,7 +19,7 @@ export const WishlistProvider = ({ children }) => {
           const response = await axios.get(`${BACKEND_URL}api/wishlist/${user.uid}`);
           setWishlist(response.data);
         } catch (error) {
-          console.error('Error fetching wishlist:', error);
+          console.error('Error fetching wishlist:', error.message);
         }
       }
     };
@@ -43,7 +43,7 @@ export const WishlistProvider = ({ children }) => {
         setWishlist([...wishlist, response.data]);
         return { success: true };
       } catch (error) {
-        console.error('Error adding to wishlist:', error);
+        console.error('Error adding to wishlist:', error.message);
         return { success: false, message: 'Error adding item to wishlist' };
       }
     }
@@ -52,10 +52,15 @@ export const WishlistProvider = ({ children }) => {
   const removeFromWishlist = async (itemId) => {
     if (user) {
       try {
-        await axios.delete(`${BACKEND_URL}api/wishlist/remove/${itemId}`);
-        setWishlist(wishlist.filter((item) => item._id !== itemId));
+        const response = await axios.delete(`${BACKEND_URL}api/wishlist/remove/${itemId}`);
+        if (response.status === 200) {
+          setWishlist(wishlist.filter((item) => item._id !== itemId));
+        } else {
+          throw new Error('Failed to remove item from wishlist');
+        }
       } catch (error) {
-        console.error('Error removing from wishlist:', error);
+        console.error('Error removing from wishlist:', error.message);
+        // Optionally display a toast or alert to notify the user
       }
     }
   };
