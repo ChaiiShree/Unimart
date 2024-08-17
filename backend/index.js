@@ -106,7 +106,11 @@ app.get('/api/products/:id/image/:srno', async (req, res) => {
     }
     const image = product.images[srno];
     //return the raw image
-    res.sendFile(image);
+    //convert base64 to image
+    //res.setHeader('Content-Type', 'image/jpeg');
+    //res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.send(Buffer.from(image, 'base64'));
 
   } catch (error) {
     console.error('Error fetching product image:', error);
