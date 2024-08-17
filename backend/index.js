@@ -200,7 +200,7 @@ app.post('/api/wishlist/add', async (req, res) => {
 app.delete('/api/wishlist/remove/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    await Wishlist.findByIdAndRemove(id);
+    await Wishlist.findByIdAndDelete(id);
     res.status(200).json({ message: 'Product removed from wishlist' });
   } catch (error) {
     console.error('Error removing product from wishlist:', error);
