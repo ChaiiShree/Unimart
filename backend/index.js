@@ -122,8 +122,9 @@ app.get('/api/products', async (req, res) => {
     const products = await Product.find({});
 
     for(var i=0;i<products.length;i++){
+      var oldImages = products[i].images;
       products[i].images = [];
-      for(var j=0;j<products[i].images.length;j++){
+      for(var j=0;j<oldImages.length;j++){
         products[i].images.push(`https://unipalmark-backend.hf.space/api/products/${products[i]._id}/image/${j}`);
       }
     }
