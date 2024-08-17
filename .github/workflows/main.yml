@@ -21,17 +21,17 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
+      - name: Configure Git Credentials
+        run: |
+          echo "https://unipalmark:${{ secrets.GIT_PASS }}@github.com" > ~/.git-credentials
+          git config --global credential.helper store
+
       - name: Initialize and Push to Another Repository
         run: |
           cd frontend
           git init
           git checkout -b main
-          git remote add origin https://unipalmark:${{ secrets.GIT_PASS }}@github.com/unipalmark/unipal-frontend.git
-
-          # Configure Git to use credentials
-          git config credential.helper store
-          echo "https://unipalmark:${{ secrets.GIT_PASS }}@github.com" > ~/.git-credentials
-
+          git remote add origin https://github.com/unipalmark/unipal-frontend.git
           git add .
           git commit -m "Update frontend"
           git push origin main --force
