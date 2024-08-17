@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebaseConfig'; // Your Firebase configuration file
-import { BACKEND_URL } from '../config';
+import { BACKEND_URL } from '../config'; // Ensure BACKEND_URL does not have a trailing slash
 
 const WishlistContext = createContext();
 
@@ -30,15 +30,13 @@ export const WishlistProvider = ({ children }) => {
   const addToWishlist = async (item) => {
     if (user) {
       try {
-        // Check if the item is already in the wishlist
         const itemInWishlist = wishlist.some(wishlistItem => wishlistItem._id === item._id);
         
         if (itemInWishlist) {
-          // Return a specific error message if the item is already in the wishlist
           return { success: false, message: 'Item already in wishlist' };
         }
         
-        const response = await axios.post(BACKEND_URL + '/api/wishlist/add', {
+        const response = await axios.post(`${BACKEND_URL}/api/wishlist/add`, {
           ...item,
           userId: user.uid,
         });
@@ -46,7 +44,7 @@ export const WishlistProvider = ({ children }) => {
         return { success: true };
       } catch (error) {
         console.error('Error adding to wishlist:', error);
-        return { success: false, message: 'Product Already in Wishlist' };
+        return { success: false, message: 'Error adding item to wishlist' };
       }
     }
   };
