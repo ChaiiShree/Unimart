@@ -5,6 +5,7 @@ import { useWishlist } from "../components/WishlistContext";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./Home.css";
+import { BACKEND_URL } from "../config";
 
 const Home = () => {
   const { addToWishlist } = useWishlist();
@@ -18,7 +19,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/products");
+        const response = await fetch( BACKEND_URL + "api/products");
         const text = await response.text();
         
         try {

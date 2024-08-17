@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./FooterStyles.css";
+import { BACKEND_URL } from "../config";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ const Footer = () => {
 
   const handleJoinClick = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/api/subscribe", { email });
+      const response = await axios.post(BACKEND_URL + "/api/subscribe", { email });
       alert("Thank you for joining our community!");
       setEmail("");
     } catch (error) {

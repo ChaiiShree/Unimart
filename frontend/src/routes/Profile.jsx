@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebaseConfig";
 import "./Profile.css"; // Import styles from Profile.css
+import { BACKEND_URL } from "../config";
 
 const Profile = () => {
   const [user] = useAuthState(auth);
@@ -20,7 +21,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/user/${user.uid}`);
+        const response = await fetch( BACKEND_URL + `api/user/${user.uid}`);
         if (response.ok) {
           const data = await response.json();
           setUserData(data);
@@ -41,7 +42,7 @@ const Profile = () => {
 
     const fetchUserProducts = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/products/user/${user.uid}`);
+        const response = await fetch(`${BACKEND_URL}api/products/user/${user.uid}`);
         if (response.ok) {
           const data = await response.json();
           setProducts(data);
@@ -70,7 +71,7 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/api/user/${user.uid}`, {
+      const response = await fetch(`${BACKEND_URL}api/user/${user.uid}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -93,7 +94,7 @@ const Profile = () => {
     const confirmDelete = window.confirm(`Are you sure you want to delete "${productName}"?`);
     if (confirmDelete) {
       try {
-        const response = await fetch(`http://localhost:5000/api/products/${productId}`, {
+        const response = await fetch(`${BACKEND_URL}api/products/${productId}`, {
           method: "DELETE",
         });
         if (response.ok) {
