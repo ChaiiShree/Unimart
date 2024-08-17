@@ -1,0 +1,37 @@
+name: Push Frontend to Another Repository
+
+on:
+  push:
+    paths:
+      - 'frontend/**'
+    branches:
+      - main
+  workflow_dispatch:  # Allows the workflow to be manually triggered
+
+jobs:
+  push-to-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Initialize and Push to Another Repository
+        run: |
+          cd frontend
+          git init
+          git checkout -b main  # Use 'main' branch; change if needed
+          git remote add origin https://unipalmark:${{ secrets.GIT_PASS }}@github.com/unipalmark/unipal-frontend.git
+
+          # Configure Git to use credentials
+          git config credential.helper store
+          echo "https://unipalmark:${{ secrets.GIT_PASS }}@github.com" > ~/.git-credentials
+
+          git add .
+          git commit -m "Update frontend"
+          git push origin main --force
