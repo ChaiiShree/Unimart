@@ -14,7 +14,8 @@ const Wishlist = () => {
         {item.images.map((image, index) => (
           <img
             key={index}
-            src={`data:image/jpeg;base64,${image}`}
+            // src={`data:image/jpeg;base64,${image}`}
+            src={`${image}`}
             alt={`${item.productName}-${index}`}
             className="wishlist-image"
           />

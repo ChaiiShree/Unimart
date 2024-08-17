@@ -78,7 +78,8 @@ const Home = () => {
   const renderProducts = () => {
     return filteredProducts.map((product) => (
       <div key={product._id} className="product-card">
-        <img src={`data:image/jpeg;base64,${product.images[0]}`} alt={product.productName} className="product-image" />
+        {/* <img src={`data:image/jpeg;base64,${product.images[0]}`} alt={product.productName} className="product-image" /> */}
+        <img src={`${product.images[0]}`} alt={product.productName} className="product-image" />
         <div className="product-details">
           <h2>{product.productName}</h2>
           <p>{product.description}</p>

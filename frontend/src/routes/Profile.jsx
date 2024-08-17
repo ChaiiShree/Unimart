@@ -182,8 +182,9 @@ const Profile = () => {
             <ul className="product-list">
               {products.map((product) => (
                 <li key={product._id} className="product-item">
-                  <img src={`data:image/jpeg;base64,${product.images[0]}`} // Assuming first image for simplicity
-          alt={product.productName}
+                  {/* <img src={`data:image/jpeg;base64,${product.images[0]}`} // Assuming first image for simplicity */}
+                  <img src={`${product.images[0]}`} // Assuming first image for simplicity
+                  alt={product.productName}
           className="product-image" />
                   <div className="product-details">
                     <h3>{product.productName}</h3>

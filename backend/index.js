@@ -95,10 +95,39 @@ app.post('/api/subscribe', async (req, res) => {
   }
 });
 
+
+app.get('api/products/:id/image/:srno', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { srno } = req.params;
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    const image = product.images[srno];
+    //return the raw image
+    res.sendFile(image);
+
+  } catch (error) {
+    console.error('Error fetching product image:', error);
+    res.status(500).json({ message: `Error fetching product image: ${error.message}` });
+  }
+
+});
+
+
 // Products Route
 app.get('/api/products', async (req, res) => {
   try {
     const products = await Product.find({});
+
+    for(var i=0;i<products.length;i++){
+      products[i].images = [];
+      for(var j=0;j<products[i].images.length;j++){
+        products[i].images.push(`https://unipalmark-backend.hf.space/api/products/${products[i]._id}/image/${j}`);
+      }
+    }
+
     res.status(200).json(products);
   } catch (error) {
     console.error('Error fetching products:', error);
