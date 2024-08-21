@@ -158,17 +158,15 @@ app.delete('/api/products/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Find the product to be deleted
-    const product = await Product.findById(id);
-    if (!product) {
+    // Remove the product from Product collection
+    const result = await Product.deleteOne({ _id: id });
+
+    if (result.deletedCount === 0) {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    // Remove the product from Product collection
-    await product.remove();
-
     // Remove the product from Wishlist collection
-    await Wishlist.deleteMany({ productName: product.productName });
+    await Wishlist.deleteMany({ product: id });
 
     res.status(200).json({ message: 'Product removed successfully' });
   } catch (error) {
@@ -176,6 +174,7 @@ app.delete('/api/products/:id', async (req, res) => {
     res.status(500).json({ message: `Error removing product: ${error.message}` });
   }
 });
+
 
 // Wishlist Routes
 app.post('/api/wishlist/add', async (req, res) => {
