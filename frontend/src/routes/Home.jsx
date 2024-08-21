@@ -6,15 +6,19 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./Home.css";
 import { BACKEND_URL } from "../config";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom"; // Assuming you're using React Router for navigation
 
 const Home = () => {
+  const auth = getAuth();
+  const navigate = useNavigate();
   const { addToWishlist } = useWishlist();
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [category, setCategory] = useState(""); 
   const [hostel, setHostel] = useState("");
   const [showFilters, setShowFilters] = useState(false);
-  const [searchText, setSearchText] = useState(""); // State for search text
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -25,7 +29,7 @@ const Home = () => {
         try {
           const data = JSON.parse(text);
           setProducts(data);
-          setFilteredProducts(data); // Initialize filtered products
+          setFilteredProducts(data);
         } catch (parseError) {
           console.error("Error parsing JSON:", parseError);
           console.error("Response text:", text);
@@ -40,7 +44,7 @@ const Home = () => {
 
   useEffect(() => {
     filterProducts();
-  }, [category, hostel, searchText]); // Update filtered products when category, hostel, or searchText changes
+  }, [category, hostel, searchText]);
 
   const filterProducts = () => {
     let tempProducts = products;
@@ -63,22 +67,30 @@ const Home = () => {
   };
 
   const handleSearch = (text) => {
-    setSearchText(text); // Update search text state
+    setSearchText(text);
   };
 
   const handleAddToWishlist = async (product) => {
+    const user = auth.currentUser;
+
+    if (!user) {
+      // If the user is not logged in, redirect to the login page
+      toast.warn("Please log in to add items to your wishlist.");
+      navigate("/login");
+      return;
+    }
+
     const result = await addToWishlist(product);
     if (result.success) {
       toast.success("Added to Wishlist");
     } else {
-      toast.warn(result.message); // Use the specific error message from the result
+      toast.warn(result.message);
     }
   };
 
   const renderProducts = () => {
     return filteredProducts.map((product) => (
       <div key={product._id} className="product-card">
-        {/* <img src={data:image/jpeg;base64,${product.images[0]}} alt={product.productName} className="product-image" /> */}
         <img src={`${product.images[0]}`} alt={product.productName} className="product-image" />
         <div className="product-details">
           <h2>{product.productName}</h2>

@@ -71,7 +71,7 @@ function SellProduct() {
     if (!category || category === "") newErrors.category = "Category is required";
     if (!description) newErrors.description = "Description is required";
     if (!price) newErrors.price = "Price is required";
-    if (images.length === 0) newErrors.images = "At least one image is required";
+    if (images.length === 0) newErrors.images = "Image size limit is 1.5MB";
     if (!hostel || hostel === "") newErrors.hostel = "Hostel is required";
     if (!quantity) newErrors.quantity = "Quantity is required";
     if (!contactOption) newErrors.contactOption = "Contact option is required";
