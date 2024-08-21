@@ -15,14 +15,15 @@ function SellProduct() {
     category: "",
     description: "",
     price: "",
-    images: [], // Changed to an array for multiple images
+    images: [], 
     hostel: "",
     quantity: "",
-    contactOption: "", // No default value for dropdown
-    contactValue: "" // Store the value for Telegram username or WhatsApp number
+    contactOption: "", 
+    contactValue: ""
   });
 
-  const [user] = useAuthState(auth); // Get the currently logged-in user
+  const [errors, setErrors] = useState({}); // Track errors for each field
+  const [user] = useAuthState(auth); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,12 +31,15 @@ function SellProduct() {
       ...prevData,
       [name]: value,
     }));
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "", // Clear the error when user starts typing
+    }));
   };
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
 
-    // Ensure the total size of images does not exceed 1.5MB
     const totalSize = files.reduce((acc, file) => acc + file.size, 0);
     if (totalSize > 1.5 * 1024 * 1024) {
       toast.error("Total file size exceeds 1.5MB. Please choose smaller files.");
@@ -44,7 +48,7 @@ function SellProduct() {
 
     const reader = new FileReader();
     reader.onload = () => {
-      const base64Image = reader.result.split(',')[1]; // Extract only the base64 data
+      const base64Image = reader.result.split(',')[1]; 
       setFormData(prevData => ({
         ...prevData,
         images: [...prevData.images, base64Image]
@@ -52,15 +56,30 @@ function SellProduct() {
     };
 
     files.forEach(file => reader.readAsDataURL(file));
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      images: "", // Clear the error if any
+    }));
   };
 
   const validateForm = () => {
+    const newErrors = {};
     const { sellerName, productName, category, description, price, images, hostel, quantity, contactOption, contactValue } = formData;
-    
-    if (!sellerName || !productName || !category || category === "" || !description || !price || images.length === 0 || !hostel || hostel === "" || !quantity || !contactOption || !contactValue) {
-      return false;
-    }
-    return true;
+
+    if (!sellerName) newErrors.sellerName = "Seller name is required";
+    if (!productName) newErrors.productName = "Product name is required";
+    if (!category || category === "") newErrors.category = "Category is required";
+    if (!description) newErrors.description = "Description is required";
+    if (!price) newErrors.price = "Price is required";
+    if (images.length === 0) newErrors.images = "At least one image is required";
+    if (!hostel || hostel === "") newErrors.hostel = "Hostel is required";
+    if (!quantity) newErrors.quantity = "Quantity is required";
+    if (!contactOption) newErrors.contactOption = "Contact option is required";
+    if (!contactValue) newErrors.contactValue = "Contact value is required";
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0; // Return true if there are no errors
   };
 
   const handleSubmit = async (e) => {
@@ -78,10 +97,10 @@ function SellProduct() {
       productName,
       category,
       description,
-      price: Number(price), // Ensure price is converted to number
+      price: Number(price),
       images,
       hostel,
-      quantity: Number(quantity), // Ensure quantity is converted to number
+      quantity: Number(quantity),
       uid: user.uid,
       telegramUsername: contactOption === "telegram" ? contactValue : "",
       whatsappNumber: contactOption === "whatsapp" ? contactValue : ""
@@ -105,12 +124,13 @@ function SellProduct() {
           category: "",
           description: "",
           price: "",
-          images: [], // Reset images array
+          images: [], 
           hostel: "",
           quantity: "",
-          contactOption: "", // Reset to default option
+          contactOption: "", 
           contactValue: ""
         });
+        setErrors({});
       } else {
         const errorData = await response.json();
         toast.error(errorData.message || "Something went wrong.");
@@ -135,6 +155,7 @@ function SellProduct() {
             required
             value={formData.sellerName}
             onChange={handleChange}
+            error={errors.sellerName} // Pass error if exists
           />
           <FormField
             label="Contact Info *"
@@ -149,6 +170,7 @@ function SellProduct() {
               { value: "telegram", label: "Telegram Username" },
               { value: "whatsapp", label: "WhatsApp Number" }
             ]}
+            error={errors.contactOption} // Pass error if exists
           />
           {formData.contactOption && (
             <FormField
@@ -159,6 +181,7 @@ function SellProduct() {
               required
               value={formData.contactValue}
               onChange={handleChange}
+              error={errors.contactValue} // Pass error if exists
             />
           )}
           <FormField
@@ -169,34 +192,36 @@ function SellProduct() {
             required
             value={formData.productName}
             onChange={handleChange}
+            error={errors.productName} // Pass error if exists
           />
-<FormField
-  label="Category *"
-  id="category"
-  name="category"
-  type="select"
-  required
-  value={formData.category}
-  onChange={handleChange}
-  options={[
-    { value: "", label: "Select Category" },
-    { value: "Electronics", label: "Electronics" },
-    { value: "Clothing", label: "Clothing" },
-    { value: "Books", label: "Books" },
-    { value: "Sports", label: "Sports" },
-    { value: "Stationery", label: "Stationery" },
-    { value: "Furniture", label: "Furniture" },
-    { value: "Kitchenware", label: "Kitchenware" },
-    { value: "Accessories", label: "Accessories" },
-    { value: "Bicycles", label: "Bicycles" },
-    { value: "Musical Instruments", label: "Musical Instruments" },
-    { value: "Room Decor", label: "Room Decor" },
-    { value: "Food Items", label: "Food Items" },
-    { value: "Health & Fitness", label: "Health & Fitness" },
-    { value: "Beauty & Personal Care", label: "Beauty & Personal Care" },
-    { value: "Others", label: "Others" }
-  ]}
-/>
+          <FormField
+            label="Category *"
+            id="category"
+            name="category"
+            type="select"
+            required
+            value={formData.category}
+            onChange={handleChange}
+            options={[
+              { value: "", label: "Select Category" },
+              { value: "Electronics", label: "Electronics" },
+              { value: "Clothing", label: "Clothing" },
+              { value: "Books", label: "Books" },
+              { value: "Sports", label: "Sports" },
+              { value: "Stationery", label: "Stationery" },
+              { value: "Furniture", label: "Furniture" },
+              { value: "Kitchenware", label: "Kitchenware" },
+              { value: "Accessories", label: "Accessories" },
+              { value: "Bicycles", label: "Bicycles" },
+              { value: "Musical Instruments", label: "Musical Instruments" },
+              { value: "Room Decor", label: "Room Decor" },
+              { value: "Food Items", label: "Food Items" },
+              { value: "Health & Fitness", label: "Health & Fitness" },
+              { value: "Beauty & Personal Care", label: "Beauty & Personal Care" },
+              { value: "Others", label: "Others" }
+            ]}
+            error={errors.category} // Pass error if exists
+          />
           <FormField
             label="Description *"
             id="description"
@@ -205,6 +230,7 @@ function SellProduct() {
             required
             value={formData.description}
             onChange={handleChange}
+            error={errors.description} // Pass error if exists
           />
           <FormField
             label="Price *"
@@ -214,6 +240,7 @@ function SellProduct() {
             required
             value={formData.price}
             onChange={handleChange}
+            error={errors.price} // Pass error if exists
           />
           <FormField
             label="Images *"
@@ -221,38 +248,35 @@ function SellProduct() {
             name="images"
             type="file"
             accept="image/*"
-            multiple // Allow multiple image selection
+            multiple
             required
             onChange={handleFileChange}
+            error={errors.images} // Pass error if exists
           />
-<FormField
-  label="Hostel *"
-  id="hostel"
-  name="hostel"
-  type="select"
-  required
-  value={formData.hostel}
-  onChange={handleChange}
-  options={[
-    { value: "", label: "Select Hostel" },
-    { value: "A", label: "A" },
-    { value: "B", label: "B" },
-    { value: "C", label: "C" },
-    { value: "D", label: "D" },
-    { value: "E", label: "E" },
-    { value: "G", label: "G" },
-    { value: "H", label: "H" },
-    { value: "I", label: "I" },
-    { value: "J", label: "J" },
-    { value: "K", label: "K" },
-    { value: "L", label: "L" },
-    { value: "M", label: "M" },
-    { value: "N", label: "N" },
-    { value: "O", label: "O" },
-    { value: "PG", label: "PG" },
-    { value: "Q", label: "Q" }
-  ]}
-/>
+          <FormField
+            label="Hostel *"
+            id="hostel"
+            name="hostel"
+            type="select"
+            required
+            value={formData.hostel}
+            onChange={handleChange}
+            options={[
+              { value: "", label: "Select Hostel" },
+              { value: "A", label: "A" },
+              { value: "B", label: "B" },
+              { value: "C", label: "C" },
+              { value: "D", label: "D" },
+              { value: "E", label: "E" },
+              { value: "F", label: "F" },
+              { value: "G", label: "G" },
+              { value: "H", label: "H" },
+              { value: "I", label: "I" },
+              { value: "J", label: "J" },
+              { value: "K", label: "K" }
+            ]}
+            error={errors.hostel} // Pass error if exists
+          />
           <FormField
             label="Quantity *"
             id="quantity"
@@ -261,30 +285,42 @@ function SellProduct() {
             required
             value={formData.quantity}
             onChange={handleChange}
+            error={errors.quantity} // Pass error if exists
           />
-          <button type="submit" className="submit-button">Upload Product</button>
+          <button type="submit">Submit</button>
         </form>
+        <ToastContainer />
       </div>
       <Footer />
-      <ToastContainer />
     </>
   );
 }
 
-function FormField({ label, id, name, type, value, onChange, options, required, accept, multiple }) {
+// Reusable FormField component
+const FormField = ({ label, id, name, type, value, onChange, options, required, accept, multiple, error }) => {
   return (
-    <div className="form-group">
+    <div className={`form-group ${error ? "has-error" : ""}`}>
       <label htmlFor={id}>{label}</label>
-      {type === 'select' ? (
-        <select id={id} name={name} value={value} onChange={onChange} required={required}>
+      {type === "select" ? (
+        <select
+          id={id}
+          name={name}
+          value={value}
+          onChange={onChange}
+          required={required}
+        >
           {options.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
+            <option key={option.value} value={option.value}>{option.label}</option>
           ))}
         </select>
-      ) : type === 'textarea' ? (
-        <textarea id={id} name={name} value={value} onChange={onChange} required={required} />
+      ) : type === "textarea" ? (
+        <textarea
+          id={id}
+          name={name}
+          value={value}
+          onChange={onChange}
+          required={required}
+        />
       ) : (
         <input
           id={id}
@@ -297,6 +333,7 @@ function FormField({ label, id, name, type, value, onChange, options, required, 
           multiple={multiple}
         />
       )}
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 }
