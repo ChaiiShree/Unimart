@@ -4,14 +4,13 @@ import Footer from "../components/Footer";
 import { useWishlist } from "../components/WishlistContext";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../firebaseConfig'; // Firebase auth configuration
+import firebase from 'firebase/compat/app';
 import "./Home.css";
 import { BACKEND_URL } from "../config";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useNavigate } from "react-router-dom"; // Assuming you're using React Router for navigation
 
 const Home = () => {
-  const auth = getAuth();
-  const navigate = useNavigate();
   const { addToWishlist } = useWishlist();
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -19,6 +18,7 @@ const Home = () => {
   const [hostel, setHostel] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [user] = useAuthState(auth); // Get the current user
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -29,7 +29,7 @@ const Home = () => {
         try {
           const data = JSON.parse(text);
           setProducts(data);
-          setFilteredProducts(data);
+          setFilteredProducts(data); // Initialize filtered products
         } catch (parseError) {
           console.error("Error parsing JSON:", parseError);
           console.error("Response text:", text);
@@ -44,7 +44,7 @@ const Home = () => {
 
   useEffect(() => {
     filterProducts();
-  }, [category, hostel, searchText]);
+  }, [category, hostel, searchText]); // Update filtered products when category, hostel, or searchText changes
 
   const filterProducts = () => {
     let tempProducts = products;
@@ -67,16 +67,14 @@ const Home = () => {
   };
 
   const handleSearch = (text) => {
-    setSearchText(text);
+    setSearchText(text); // Update search text state
   };
 
   const handleAddToWishlist = async (product) => {
-    const user = auth.currentUser;
-
+    // Check if user is logged in
     if (!user) {
-      // If the user is not logged in, redirect to the login page
-      toast.warn("Please log in to add items to your wishlist.");
-      navigate("/login");
+      toast.warn("Please log in to add items to your wishlist");
+      auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()); // Redirect to login
       return;
     }
 
@@ -84,7 +82,7 @@ const Home = () => {
     if (result.success) {
       toast.success("Added to Wishlist");
     } else {
-      toast.warn(result.message);
+      toast.warn(result.message); // Use the specific error message from the result
     }
   };
 
