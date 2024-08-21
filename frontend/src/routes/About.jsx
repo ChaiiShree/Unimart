@@ -5,6 +5,7 @@ import TeamMember1Img from "../assets/chaitanya.jpg";
 import TeamMember2Img from "../assets/jayani.jpg";
 import TeamMember3Img from "../assets/astik.jpg";
 import TeamMember4Img from "../assets/Japleen.jpg";
+import TeamMember5Img from "../assets/dev.jpg";
 import MissionImage from "../assets/image2.jpg";
 import AgendaImage from "../assets/image1.jpg";
 import ValuesImage from "../assets/image3.jpg";
@@ -94,6 +95,17 @@ const About = () => {
                 <a href="https://github.com/JapleenKaur3" target="_blank" rel="noopener noreferrer"><FontAwesomeIcon icon={faGithub} className="social-icon" /></a>
                 <a href=" https://www.linkedin.com/in/japleen-kaur-46720724a/ " target="_blank" rel="noopener noreferrer"><FontAwesomeIcon icon={faLinkedin} className="social-icon" /></a>
                 <a href="https://www.instagram.com/__japleenkaur/ " target="_blank" rel="noopener noreferrer"><FontAwesomeIcon icon={faInstagram} className="social-icon" /></a>
+              </div>
+            </div>
+          </div>
+          <div className="team-card">
+            <img src={TeamMember5Img} alt="Team Member 5" className="team-member-img" />
+            <div className="team-member-info">
+              <h4>Dev Goyal</h4>
+              <div className="social-links">
+                <a href="https://github.com/dgbkn" target="_blank" rel="noopener noreferrer"><FontAwesomeIcon icon={faGithub} className="social-icon" /></a>
+                <a href=" https://www.linkedin.com/in/dev--goyal/ " target="_blank" rel="noopener noreferrer"><FontAwesomeIcon icon={faLinkedin} className="social-icon" /></a>
+                <a href="https://www.instagram.com/dev_goyal_2005?igsh=MXhxOG5lYWZxaXducQ== " target="_blank" rel="noopener noreferrer"><FontAwesomeIcon icon={faInstagram} className="social-icon" /></a>
               </div>
             </div>
           </div>

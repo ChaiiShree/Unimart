@@ -70,14 +70,14 @@ const Footer = () => {
         </div>
         <hr className="footer-divider" />
         <div className="right-section">
-          <h4>UniPal</h4>
+          <h4>UniiPal</h4>
           <p>
-            UniPal is the ultimate college marketplace where students can buy, sell, and trade with ease. Join our community and be a part of the revolution.
+            UniiPal is the ultimate college marketplace where students can buy, sell, and trade with ease. Join our community and be a part of the revolution.
           </p>
         </div>
       </div>
       <div className="footer-bottom">
-        <p>&copy; 2024 UniPal</p>
+        <p>&copy; 2024 UniiPal</p>
       </div>
     </div>
   );

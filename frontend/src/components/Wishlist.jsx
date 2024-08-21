@@ -1,4 +1,6 @@
 import React from "react";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toast notifications
 import { useWishlist } from "./WishlistContext";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -64,6 +66,7 @@ const Wishlist = () => {
           <p>Your Wishlist is empty</p>
         )}
       </div>
+      <ToastContainer /> {/* Add this to render toasts */}
       <Footer />
     </>
   );

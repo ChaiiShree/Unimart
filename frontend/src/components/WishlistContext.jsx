@@ -45,7 +45,7 @@ export const WishlistProvider = ({ children }) => {
         return { success: true };
       } catch (error) {
         console.error('Error adding to wishlist:', error);
-        return { success: false, message: 'Error adding item to wishlist' };
+        toast.error('Item already in wishlist');
       }
     }
   };
@@ -57,13 +57,13 @@ export const WishlistProvider = ({ children }) => {
         
         if (response.status === 200) {
           setWishlist(wishlist.filter((item) => item._id !== itemId));
-          toast.success('Item removed from wishlist'); // Use toast to show success message
+          toast.success('Item removed from wishlist'); // Show success toast
         } else {
           throw new Error('Failed to remove item from wishlist');
         }
       } catch (error) {
         console.error('Error removing from wishlist:', error.message);
-        toast.error('Error removing item from wishlist'); // Use toast to show error message
+        toast.error('Error removing item from wishlist'); // Show error toast
       }
     }
   };
