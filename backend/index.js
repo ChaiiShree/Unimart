@@ -368,6 +368,15 @@ app.get('/api/products/user/:uid', async (req, res) => {
   try {
     const { uid } = req.params;
     const products = await Product.find({ uid });
+    
+    for(var i=0;i<products.length;i++){
+      var oldImages = products[i].images;
+      products[i].images = [];
+      for(var j=0;j<oldImages.length;j++){
+        products[i].images.push(`https://unipalmark-backend.hf.space/api/products/${products[i]._id}/image/${j}`);
+      }
+    }
+    
     res.status(200).json(products);
   } catch (error) {
     console.error('Error fetching user products:', error);
