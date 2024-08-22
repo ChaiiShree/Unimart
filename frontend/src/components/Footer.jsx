@@ -63,7 +63,7 @@ const Footer = () => {
             <a href="https://x.com/uniipal " target="_blank" rel="noopener noreferrer">
               <i className="fa-brands fa-twitter"></i>
             </a>
-            <a href="https://www.linkedin.com/in/unipal-marketplace/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.linkedin.com/company/uniipalmarketplace/posts/?feedView=all" target="_blank" rel="noopener noreferrer">
               <i className="fa-brands fa-linkedin"></i>
             </a>
           </div>
