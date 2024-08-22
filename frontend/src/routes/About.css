@@ -72,7 +72,7 @@ body {
   padding: 1.5rem;
   border-radius: 10px;
   text-align: center;
-  width: 230px; /* Adjusted width to fit 5 cards in a row */
+  width: 200px; /* Adjusted width to fit 5 cards in a row */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
