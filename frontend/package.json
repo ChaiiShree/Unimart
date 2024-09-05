@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
-    "@firebase/app": "^0.10.6",
+    "@firebase/app": "^0.10.10",
     "@firebase/auth": "^1.7.5",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
