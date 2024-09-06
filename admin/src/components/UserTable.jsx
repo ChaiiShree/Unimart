@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);  // Error state
 
   useEffect(() => {
     fetchUsers();
@@ -11,53 +12,62 @@ const UserTable = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/users');
+      const response = await axios.get('https://unipalmark-backend.hf.space/api/users');
       setUsers(response.data);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching users:', error);
+      setError('Failed to load users. Please try again later.');
+    } finally {
       setLoading(false);
     }
   };
 
   const handleSuspend = async (uid) => {
     try {
-      await axios.put(`http://localhost:5000/api/user/suspend/${uid}`);
-      fetchUsers();
+      await axios.put(`https://unipalmark-backend.hf.space/api/users/suspend/${uid}`);
+      fetchUsers();  // Refresh the user list
     } catch (error) {
       console.error('Error suspending user:', error);
+      setError('Failed to suspend user. Please try again.');
     }
   };
 
   const handleBlock = async (uid) => {
     try {
-      await axios.put(`http://localhost:5000/api/user/block/${uid}`);
-      fetchUsers();
+      await axios.put(`https://unipalmark-backend.hf.space/api/users/block/${uid}`);
+      fetchUsers();  // Refresh user list
     } catch (error) {
       console.error('Error blocking user:', error);
+      setError('Failed to block user. Please try again.');
     }
   };
 
   const handleUnblock = async (uid) => {
     try {
-      await axios.put(`http://localhost:5000/api/user/unblock/${uid}`);
+      await axios.put(`https://unipalmark-backend.hf.space/api/users/unblock/${uid}`);
       fetchUsers();
     } catch (error) {
       console.error('Error unblocking user:', error);
+      setError('Failed to unblock user. Please try again.');
     }
   };
 
   const handleUnsuspend = async (uid) => {
     try {
-      await axios.put(`http://localhost:5000/api/user/unsuspend/${uid}`);
+      await axios.put(`https://unipalmark-backend.hf.space/api/users/unsuspend/${uid}`);
       fetchUsers();
     } catch (error) {
       console.error('Error unsuspending user:', error);
+      setError('Failed to unsuspend user. Please try again.');
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Loading users...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
   }
 
   return (

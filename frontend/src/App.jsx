@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Home from "./routes/Home";
 import About from "./routes/About";
 import SellProduct from "./routes/sellproduct";
@@ -10,12 +10,26 @@ import { WishlistProvider } from "./components/WishlistContext";
 import { auth, provider } from "./firebaseConfig";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 
+// Protected Route Component
+const ProtectedRoute = ({ user, children }) => {
+  if (!user) {
+    return <Navigate to="/home" />;
+  }
+  return children;
+};
+
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [authError, setAuthError] = useState("");
 
   useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+      setIsLoading(false);
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         if (currentUser.email.endsWith("@thapar.edu")) {
@@ -51,13 +65,26 @@ function App() {
   return (
     <WishlistProvider>
       <Router>
+        {authError && <div className="error">{authError}</div>} {/* Display Error */}
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/sellproduct" element={<SellProduct />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/sellproduct" element={
+            <ProtectedRoute user={user}>
+              <SellProduct />
+            </ProtectedRoute>
+          }/>
+          <Route path="/wishlist" element={
+            <ProtectedRoute user={user}>
+              <Wishlist />
+            </ProtectedRoute>
+          }/>
+          <Route path="/profile" element={
+            <ProtectedRoute user={user}>
+              <Profile />
+            </ProtectedRoute>
+          }/>
           <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
       </Router>
