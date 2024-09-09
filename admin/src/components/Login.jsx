@@ -1,23 +1,30 @@
 // src/components/Login.jsx
 import React from "react";
-import { auth } from "../firebase";
-import firebase from "firebase/app";
+import { auth, provider, signInWithPopup, signOut } from "../firebase";
 
 const Login = () => {
   const handleGoogleLogin = async () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
     try {
-      const result = await auth.signInWithPopup(provider);
+      const result = await signInWithPopup(auth, provider);
       const email = result.user.email;
 
-      // Get allowed emails from .env
-      const allowedEmails = import.meta.env.VITE_ALLOWED_EMAILS.split(",");
+      // Hardcode the allowed emails (You can later manage this via a database if needed)
+      const allowedEmails = [
+        "dgoyal5_be22@thapar.edu",
+        "cjayant_be22@thapar.edu",
+        "athukral1_be22@thapar.edu",
+        "jmalik_be22@thapar.edu",
+        "jkaur4_be22@thapar.edu"
+      ];
+
+      // Check if the logged-in user's email is in the allowed emails list
       if (!allowedEmails.includes(email)) {
         alert("Access denied. You are not an authorized user.");
-        await auth.signOut();
+        // Sign out the unauthorized user
+        await signOut(auth);
       } else {
         alert("Login successful!");
-        // Proceed with application logic
+        // Proceed with application logic or redirect to the protected page
       }
     } catch (error) {
       console.error("Error logging in with Google:", error);

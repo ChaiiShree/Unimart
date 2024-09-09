@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import ProductTable from "./components/ProductTable";
 import UserTable from "./components/UserTable";
 import Login from "./components/Login";
-import { auth } from "./firebase";
+import { auth, signOut } from "./firebase";
 import "./App.css";
 
 function App() {
@@ -21,8 +21,23 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
   return (
     <div className="App">
+      <header className="App-header">
+        {user && (
+          <button className="logout-button" onClick={handleLogout}>
+            Logout
+          </button>
+        )}
+      </header>
       {!user ? (
         <Login />
       ) : (
