@@ -273,7 +273,13 @@ function SellProduct() {
               { value: "H", label: "H" },
               { value: "I", label: "I" },
               { value: "J", label: "J" },
-              { value: "K", label: "K" }
+              { value: "K", label: "K" },
+              { value: "L", label: "L" },
+              { value: "M", label: "M" },
+              { value: "N", label: "N" },
+              { value: "O", label: "O" },
+              { value: "Q", label: "Q" },
+              { value: "PG", label: "PG" }
             ]}
             error={errors.hostel} // Pass error if exists
           />
