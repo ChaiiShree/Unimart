@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 import './sellproduct.css';
 import { BACKEND_URL } from "../config";
 
@@ -22,8 +23,8 @@ function SellProduct() {
     contactValue: ""
   });
 
-  const [errors, setErrors] = useState({}); // Track errors for each field
-  const [user] = useAuthState(auth); 
+  const [errors, setErrors] = useState({});
+  const [user] = useAuthState(auth);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,35 +34,75 @@ function SellProduct() {
     }));
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [name]: "", // Clear the error when user starts typing
+      [name]: "", 
     }));
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
-
     const totalSize = files.reduce((acc, file) => acc + file.size, 0);
+  
     if (totalSize > 1.5 * 1024 * 1024) {
       toast.error("Total file size exceeds 1.5MB. Please choose smaller files.");
       return;
     }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const base64Image = reader.result.split(',')[1]; 
-      setFormData(prevData => ({
-        ...prevData,
-        images: [...prevData.images, base64Image]
-      }));
-    };
-
-    files.forEach(file => reader.readAsDataURL(file));
+  
+    for (const file of files) {
+      const form = new FormData();
+      form.append('file', file);
+  
+      try {
+        // POST request to the image analysis API
+        const response = await axios.post('https://merasabkuch-countthings.hf.space/analyze-image', form);
+  
+        // Log the raw API response
+        console.log("Full API Response:", response);
+  
+        // Parse the stringified JSON in response.data
+        const apiResponse = JSON.parse(response.data);
+  
+        // Log the parsed response for better inspection
+        console.log("API Response Data:", apiResponse);
+  
+        // Extracting values from the parsed response
+        const useable_on_website = apiResponse.useable_on_website;
+        const reason = apiResponse.reason;
+  
+        // Debug log for extracted values
+        console.log("useable_on_website:", useable_on_website);
+        console.log("reason:", reason);
+  
+        // Enhanced conditional check for better handling
+        if (useable_on_website === true) {
+          console.log("Image is usable and can be uploaded.");
+  
+          // Proceed with uploading the image
+          const reader = new FileReader();
+          reader.onload = () => {
+            const base64Image = reader.result.split(',')[1];
+            setFormData(prevData => ({
+              ...prevData,
+              images: [...prevData.images, base64Image]
+            }));
+          };
+          reader.readAsDataURL(file);
+          toast.success("Image uploaded successfully.");
+        } else {
+          console.error("Image not usable. Reason:", reason || "Unknown reason");
+          toast.error(`One or more images are inappropriate: ${reason || "Unknown reason"}`);
+        }
+      } catch (error) {
+        console.error("Error uploading image:", error.message);
+        toast.error("Failed to analyze image. Please try again.");
+      }
+    }
+  
     setErrors(prevErrors => ({
       ...prevErrors,
-      images: "", // Clear the error if any
+      images: "",
     }));
   };
-
+  
   const validateForm = () => {
     const newErrors = {};
     const { sellerName, productName, category, description, price, images, hostel, quantity, contactOption, contactValue } = formData;
@@ -71,7 +112,7 @@ function SellProduct() {
     if (!category || category === "") newErrors.category = "Category is required";
     if (!description) newErrors.description = "Description is required";
     if (!price) newErrors.price = "Price is required";
-    if (images.length === 0) newErrors.images = "Image size limit is 1.5MB";
+    if (images.length === 0) newErrors.images = "Please Upload an Image (Size limit:1.5Mb)";
     if (!hostel || hostel === "") newErrors.hostel = "Hostel is required";
     if (!quantity) newErrors.quantity = "Quantity is required";
     if (!contactOption) newErrors.contactOption = "Contact option is required";
@@ -79,19 +120,19 @@ function SellProduct() {
 
     setErrors(newErrors);
 
-    return Object.keys(newErrors).length === 0; // Return true if there are no errors
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!validateForm()) {
       toast.error("Please fill in all the required fields.");
       return;
     }
-
+  
     const { sellerName, productName, category, description, price, images, hostel, quantity, contactOption, contactValue } = formData;
-
+  
     const productData = {
       sellerName,
       productName,
@@ -105,7 +146,7 @@ function SellProduct() {
       telegramUsername: contactOption === "telegram" ? contactValue : "",
       whatsappNumber: contactOption === "whatsapp" ? contactValue : ""
     };
-
+  
     try {
       const response = await fetch(BACKEND_URL + "api/products", {
         method: "POST",
@@ -114,10 +155,15 @@ function SellProduct() {
         },
         body: JSON.stringify(productData),
       });
-
+  
       if (response.ok) {
         const responseData = await response.json();
         toast.success(responseData.message || "Product Uploaded");
+  
+        // Send notification to all users
+        sendProductNotification(productName, price);
+  
+        // Clear form data
         setFormData({
           sellerName: "",
           productName: "",
@@ -140,7 +186,32 @@ function SellProduct() {
       toast.error("Failed to upload product. Please try again.");
     }
   };
-
+  
+  // Function to send notification to all registered users
+  const sendProductNotification = async (productName, price) => {
+    try {
+      const notificationData = {
+        title: "New Product Uploaded!",
+        body: `${productName} is up for sale at $${price}. Check it out now!`
+      };
+  
+      // Replace with your notification API endpoint
+      const response = await fetch(BACKEND_URL + "api/notifications", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(notificationData),
+      });
+  
+      if (!response.ok) {
+        console.error("Failed to send notification.");
+      }
+    } catch (error) {
+      console.error("Error sending notification:", error);
+    }
+  };
+  
   return (
     <>
       <Navbar />
@@ -251,7 +322,7 @@ function SellProduct() {
             multiple
             required
             onChange={handleFileChange}
-            error={errors.images} // Pass error if exists
+            error={errors.images}
           />
           <FormField
             label="Hostel *"
@@ -342,6 +413,6 @@ const FormField = ({ label, id, name, type, value, onChange, options, required, 
       {error && <div className="error-message">{error}</div>}
     </div>
   );
-}
+};
 
 export default SellProduct;

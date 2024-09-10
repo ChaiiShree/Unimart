@@ -2,12 +2,19 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import admin from 'firebase-admin';
 import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 7860;
 
+// Initialize Firebase Admin SDK
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 // Middleware
 app.use(cors());
 app.use(bodyParser.json({ limit: '5mb' }));
@@ -20,6 +27,24 @@ mongoose.connect(process.env.MONGO_URI, {
 })
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('Failed to connect to MongoDB:', err));
+
+const sendNotification = async (title, body) => {
+  const message = {
+    notification: {
+      title,
+      body,
+    },
+    topic: 'allUsers', // Change this to target specific topics or tokens
+  };
+
+  try {
+    await admin.messaging().send(message);
+    console.log('Notification sent successfully');
+  } catch (error) {
+    console.error('Error sending notification:', error);
+    throw error;
+  }
+};
 
 // Subscription Schema
 const subscriptionSchema = new mongoose.Schema({
@@ -75,6 +100,17 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 // Routes
+
+app.post('/api/notifications', async (req, res) => {
+  try {
+    const { title, body } = req.body;
+    await sendNotification(title, body);
+    res.status(200).json({ message: 'Notification sent successfully' });
+  } catch (error) {
+    console.error('Error sending notification:', error);
+    res.status(500).json({ message: 'Failed to send notification' });
+  }
+});
 
 // Subscription Route
 app.post('/api/subscribe', async (req, res) => {
@@ -142,10 +178,16 @@ app.get('/api/products', async (req, res) => {
 
 app.post('/api/products', async (req, res) => {
   try {
-    const { uid, sellerName, productName, category, description, price, images, hostel, quantity, telegramUsername, whatsappNumber} = req.body;
+    const { uid, sellerName, productName, category, description, price, images, hostel, quantity, telegramUsername, whatsappNumber } = req.body;
 
-    const newProduct = new Product({ uid, sellerName, productName, category, description, price, images, hostel, quantity, telegramUsername, whatsappNumber});
+    const newProduct = new Product({ uid, sellerName, productName, category, description, price, images, hostel, quantity, telegramUsername, whatsappNumber });
     await newProduct.save();
+
+    // Send notification
+    const notificationTitle = 'New Product Uploaded!';
+    const notificationBody = `${productName} is up for sale at $${price}. Check it out now!`;
+    await sendNotification(notificationTitle, notificationBody);
+
     res.status(201).json({ message: 'Product added successfully' });
   } catch (error) {
     console.error('Error adding product:', error);
