@@ -98,7 +98,7 @@ const About = () => {
               </div>
             </div>
           </div>
-          <div className="team-card">
+          {/* <div className="team-card">
             <img src={TeamMember5Img} alt="Team Member 5" className="team-member-img" />
             <div className="team-member-info">
               <h4>Dev Goyal</h4>
@@ -108,7 +108,7 @@ const About = () => {
                 <a href="https://www.instagram.com/dev_goyal_2005?igsh=MXhxOG5lYWZxaXducQ== " target="_blank" rel="noopener noreferrer"><FontAwesomeIcon icon={faInstagram} className="social-icon" /></a>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       

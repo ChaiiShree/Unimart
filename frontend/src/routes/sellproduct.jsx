@@ -93,7 +93,7 @@ function SellProduct() {
         }
       } catch (error) {
         console.error("Error uploading image:", error.message);
-        toast.error("Failed to analyze image. Please try again.");
+        toast.error("One or more images are inappropriate");
       }
     }
   
