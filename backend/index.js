@@ -21,48 +21,57 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true,  // If you need to pass cookies between requests
+  credentials: true,  // Allow credentials like cookies
 }));
+
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Security headers using Helmet
 app.use(helmet());  // Default security headers
 
-// Custom security settings
+// Custom Content Security Policy (CSP)
 app.use(helmet.contentSecurityPolicy({
   directives: {
-    defaultSrc: ["'self'", "https://uniipal.com", "https://unipalmark-backend.hf.space","https://uniipaladmin.vercel.app/"],
-    scriptSrc: ["'self'", "'unsafe-inline'", "https://uniipal.com", "https://unipalmark-backend.hf.space","https://uniipaladmin.vercel.app/"],  // Allow trusted scripts
-    objectSrc: ["'none'"],  // Prevent plugins like Flash
-    imgSrc: ["'self'", "data:", "https://uniipal.com", "https://unipalmark-backend.hf.space","https://uniipaladmin.vercel.app/"],  // Allow images from your frontend and backend
-    connectSrc: ["'self'", "https://unipalmark-backend.hf.space"],  // Allows fetch/XHR requests to the backend
-    fontSrc: ["'self'", "https://uniipal.com","https://uniipaladmin.vercel.app/"],  // Add if you serve custom fonts
-    styleSrc: ["'self'", "'unsafe-inline'", "https://uniipal.com","https://uniipaladmin.vercel.app/"],  // Allow inline styles from trusted sources
-    upgradeInsecureRequests: [],  // Enforce HTTPS
+    defaultSrc: ["'self'", "https://uniipal.com", "https://unipalmark-backend.hf.space", "https://uniipaladmin.vercel.app/"],
+    scriptSrc: [
+      "'self'", 
+      // Avoid 'unsafe-inline' if possible. Consider refactoring your frontend to use external scripts.
+      "'self'", 
+      "https://uniipal.com", 
+      "https://unipalmark-backend.hf.space", 
+      "https://uniipaladmin.vercel.app"
+    ],
+    objectSrc: ["'none'"],  // Prevent using plugins like Flash
+    imgSrc: ["'self'", "data:", "https://uniipal.com", "https://unipalmark-backend.hf.space", "https://uniipaladmin.vercel.app"],
+    connectSrc: ["'self'", "https://unipalmark-backend.hf.space"],  // Allow requests to your backend
+    fontSrc: ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"],  // Google Fonts allowed
+    styleSrc: [
+      "'self'", 
+      // Avoid 'unsafe-inline' for styles if possible
+      "https://fonts.googleapis.com", 
+      "https://uniipal.com", 
+      "https://uniipaladmin.vercel.app"
+    ],
+    upgradeInsecureRequests: [],  // Ensure that insecure requests are upgraded to HTTPS
   },
 }));
 
-// Enable HTTP Strict Transport Security (HSTS)
+// Enable HSTS (HTTP Strict Transport Security) for 1 year
 app.use(helmet.hsts({
-  maxAge: 31536000, // 1 year
-  includeSubDomains: true,  // Apply HSTS to subdomains
+  maxAge: 31536000,  // 1 year
+  includeSubDomains: true,  // Include subdomains
+  preload: true,  // Indicate interest in preloading HSTS
 }));
 
-// Prevent clickjacking
-app.use(helmet.frameguard({ action: 'deny' }));  // Deny framing of your app
+// Clickjacking protection (Allow framing from same origin only)
+app.use(helmet.frameguard({ action: 'sameorigin' }));  // Allow framing from same origin
 
-// Hide 'X-Powered-By' to prevent exposing Express
+// Disable 'X-Powered-By' to prevent exposing Express
 app.disable('x-powered-by');
 
 // Prevent MIME type sniffing
 app.use(helmet.noSniff());
-
-// Prevent XSS attacks
-app.use(helmet.xssFilter());
-
-// Remove the default `X-Frame-Options` (clickjacking protection)
-app.use(helmet.frameguard({ action: 'sameorigin' }));
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
