@@ -60,13 +60,12 @@ body {
 
 .team-cards {
   display: flex;
-  flex-wrap: nowrap; /* Change from wrap to nowrap */
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
-  max-width: 100%; /* Remove the max-width constraint */
+  gap: 2rem;
+  width: 100%;
   margin: 0 auto;
-  overflow-x: auto; /* Add horizontal scrolling if needed */
-  padding-bottom: 1rem; /* Add some padding to accommodate the scrollbar */
+  padding: 1rem;
 }
 
 .team-card {
@@ -74,8 +73,8 @@ body {
   padding: 1.5rem;
   border-radius: 10px;
   text-align: center;
-  min-width: 230px; /* Change width to min-width */
-  flex-shrink: 0; /* Prevent cards from shrinking */
+  width: calc(50% - 1rem); /* Two cards per row */
+  max-width: 300px; /* Maximum width for larger screens */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -227,4 +226,26 @@ body {
 
 .footer-links a:hover {
   color: #DF921C;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 992px) {
+  .team-card {
+    width: calc(50% - 1rem); /* Still two cards per row */
+    max-width: 250px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .team-card {
+    width: 100%; /* One card per row */
+    max-width: 300px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .team-card {
+    width: 100%; /* One card per row */
+    max-width: 250px;
+  }
 }

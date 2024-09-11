@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import helmet from 'helmet';
+
 dotenv.config();
 
 const app = express();
@@ -12,6 +14,42 @@ const PORT = process.env.PORT || 7860;
 app.use(cors());
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Security headers using Helmet
+app.use(helmet());  // Default security headers
+
+// Custom security settings
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'", "'unsafe-inline'", "https://unipalmark-backend.hf.space/","https://uniipal.com/","https://uniipaladmin.vercel.app/"],  // Replace 'example.com' with trusted domains
+    objectSrc: ["'none'"],  // Prevent plugins like Flash
+    imgSrc: ["'self'", "data:", "https://unipalmark-backend.hf.space/","https://uniipal.com/","https://uniipaladmin.vercel.app/"],  // Allow images from 'self' and data URIs
+    upgradeInsecureRequests: [],
+  },
+}));
+
+// Enable HTTP Strict Transport Security (HSTS)
+app.use(helmet.hsts({
+  maxAge: 31536000, // 1 year
+  includeSubDomains: true,  // Apply HSTS to subdomains
+}));
+
+// Prevent clickjacking
+app.use(helmet.frameguard({ action: 'deny' }));  // Deny framing of your app
+
+// Hide 'X-Powered-By' to prevent exposing Express
+app.disable('x-powered-by');
+
+// Prevent MIME type sniffing
+app.use(helmet.noSniff());
+
+// Prevent XSS attacks
+app.use(helmet.xssFilter());
+
+// Remove the default `X-Frame-Options` (clickjacking protection)
+app.use(helmet.frameguard({ action: 'sameorigin' }));
+
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
