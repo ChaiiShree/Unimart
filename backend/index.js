@@ -21,11 +21,14 @@ app.use(helmet());  // Default security headers
 // Custom security settings
 app.use(helmet.contentSecurityPolicy({
   directives: {
-    defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", "'unsafe-inline'", "example.com"],  // Replace 'example.com' with trusted domains
+    defaultSrc: ["'self'", "https://uniipal.com", "https://unipalmark-backend.hf.space","https://uniipaladmin.vercel.app/"],
+    scriptSrc: ["'self'", "'unsafe-inline'", "https://uniipal.com", "https://unipalmark-backend.hf.space","https://uniipaladmin.vercel.app/"],  // Allow trusted scripts
     objectSrc: ["'none'"],  // Prevent plugins like Flash
-    imgSrc: ["'self'", "data:", "example.com"],  // Allow images from 'self' and data URIs
-    upgradeInsecureRequests: [],
+    imgSrc: ["'self'", "data:", "https://uniipal.com", "https://unipalmark-backend.hf.space","https://uniipaladmin.vercel.app/"],  // Allow images from your frontend and backend
+    connectSrc: ["'self'", "https://unipalmark-backend.hf.space"],  // Allows fetch/XHR requests to the backend
+    fontSrc: ["'self'", "https://uniipal.com","https://uniipaladmin.vercel.app/"],  // Add if you serve custom fonts
+    styleSrc: ["'self'", "'unsafe-inline'", "https://uniipal.com","https://uniipaladmin.vercel.app/"],  // Allow inline styles from trusted sources
+    upgradeInsecureRequests: [],  // Enforce HTTPS
   },
 }));
 
