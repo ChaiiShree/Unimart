@@ -11,7 +11,18 @@ const app = express();
 const PORT = process.env.PORT || 7860;
 
 // Middleware
-app.use(cors());
+const allowedOrigins = ['https://uniipal.com', 'https://unipaladmin.vercel.app'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,  // If you need to pass cookies between requests
+}));
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -134,7 +145,6 @@ app.post('/api/subscribe', async (req, res) => {
   }
 });
 
-
 app.get('/api/products/:id/image/:srno', async (req, res) => {
   try {
     const { id } = req.params;
@@ -143,21 +153,20 @@ app.get('/api/products/:id/image/:srno', async (req, res) => {
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
     }
+    
     const image = product.images[srno];
-    //return the raw image
-    //convert base64 to image
-    //res.setHeader('Content-Type', 'image/jpeg');
-    //res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Content-Type', 'image/jpeg');
-    res.send(Buffer.from(image, 'base64'));
 
+    // Set correct headers to allow cross-origin resource sharing for images
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin'); // Allow cross-origin image requests
+
+    // Return the image as a buffer
+    res.send(Buffer.from(image, 'base64'));
   } catch (error) {
     console.error('Error fetching product image:', error);
     res.status(500).json({ message: `Error fetching product image: ${error.message}` });
   }
-
 });
-
 
 // Products Route
 app.get('/api/products', async (req, res) => {
