@@ -47,7 +47,11 @@ app.use(helmet.contentSecurityPolicy({
     connectSrc: ["'self'", "https://unipalmark-backend.hf.space"],  // Allow requests to your backend
     fontSrc: ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"],  // Google Fonts allowed
     styleSrc: [
-      "'self'"
+      "'self'", 
+      // Avoid 'unsafe-inline' for styles if possible
+      "https://fonts.googleapis.com", 
+      "https://uniipal.com", 
+      "https://uniipaladmin.vercel.app"
     ],
     upgradeInsecureRequests: [],  // Ensure that insecure requests are upgraded to HTTPS
   },
