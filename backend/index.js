@@ -130,6 +130,7 @@ const userSchema = new mongoose.Schema({
   passingOutYear: { type: Number },
   suspendedUntil: { type: Date, default: null },
   isBlocked: { type: Boolean, default: false },
+  disclaimerAccepted: { type: Boolean, default: false },
 });
 const User = mongoose.model('User', userSchema);
 
@@ -153,6 +154,14 @@ app.post('/api/subscribe', async (req, res) => {
     res.status(500).json({ message: `Error subscribing: ${error.message}` });
   }
 });
+
+app.post('/api/accept-disclaimer', (req, res) => {
+  const userId = req.body.userId;
+  User.findByIdAndUpdate(userId, { disclaimerAccepted: true }, { new: true })
+    .then(user => res.json(user))
+    .catch(err => res.status(500).json({ error: 'Server error' }));
+});
+
 
 app.get('/api/products/:id/image/:srno', async (req, res) => {
   try {
