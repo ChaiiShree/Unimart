@@ -7,8 +7,8 @@ import Wishlist from "./components/Wishlist";
 import Profile from "./routes/Profile";
 import Loader from "./components/Loading";
 import { WishlistProvider } from "./components/WishlistContext";
-import { auth, provider } from "./firebaseConfig";
-import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebaseConfig";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 import PropTypes from 'prop-types';
 import "./App.css"; // Ensure you add modal styling here
 
@@ -27,12 +27,21 @@ const DisclaimerModal = ({ onAccept }) => {
   );
 };
 
+DisclaimerModal.propTypes = {
+  onAccept: PropTypes.func.isRequired,
+};
+
 // Protected Route Component
 const ProtectedRoute = ({ user, children }) => {
   if (!user) {
     return <Navigate to="/home" />;
   }
   return children;
+};
+
+ProtectedRoute.propTypes = {
+  user: PropTypes.object,
+  children: PropTypes.node.isRequired,
 };
 
 function App() {

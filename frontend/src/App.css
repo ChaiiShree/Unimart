@@ -32,3 +32,14 @@
     background-color: #0056b3;
   }
   
+  .navbar {
+    display: flex;
+    justify-content: space-between; /* Adjust based on alignment needs */
+    align-items: center; /* Align vertically */
+    padding: 10px;
+  }
+  
+  .navbar .tabs {
+    display: flex;
+    gap: 15px; /* Adjust this value to space your tabs evenly */
+  }
