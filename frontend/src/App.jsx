@@ -7,29 +7,8 @@ import Wishlist from "./components/Wishlist";
 import Profile from "./routes/Profile";
 import Loader from "./components/Loading";
 import { WishlistProvider } from "./components/WishlistContext";
-import { auth } from "./firebaseConfig";
-import { signOut, onAuthStateChanged } from "firebase/auth";
-import PropTypes from 'prop-types';
-import "./App.css"; // Ensure you add modal styling here
-
-// Disclaimer Modal Component
-const DisclaimerModal = ({ onAccept }) => {
-  return (
-    <div className="modal">
-      <div className="modal-content">
-        <h2>Disclaimer</h2>
-        <p>
-          The website is managed by Team Unipal, and TIET is not responsible for any sort of purchases or quality issues.
-        </p>
-        <button onClick={onAccept}>I Accept</button>
-      </div>
-    </div>
-  );
-};
-
-DisclaimerModal.propTypes = {
-  onAccept: PropTypes.func.isRequired,
-};
+import { auth, provider } from "./firebaseConfig";
+import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 
 // Protected Route Component
 const ProtectedRoute = ({ user, children }) => {
@@ -39,24 +18,15 @@ const ProtectedRoute = ({ user, children }) => {
   return children;
 };
 
-ProtectedRoute.propTypes = {
-  user: PropTypes.object,
-  children: PropTypes.node.isRequired,
-};
-
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [authError, setAuthError] = useState("");
-  const [showDisclaimer, setShowDisclaimer] = useState(false); // Track if disclaimer needs to be shown
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    const disclaimerAccepted = localStorage.getItem("disclaimerAccepted");
-
     if (storedUser) {
       setUser(JSON.parse(storedUser));
-      setShowDisclaimer(!disclaimerAccepted); // Show disclaimer if not accepted
       setIsLoading(false);
     }
 
@@ -65,9 +35,6 @@ function App() {
         if (currentUser.email.endsWith("@thapar.edu")) {
           setUser(currentUser);
           localStorage.setItem("user", JSON.stringify(currentUser));
-          if (!disclaimerAccepted) {
-            setShowDisclaimer(true); // Show disclaimer if not accepted
-          }
         } else {
           setAuthError("Only Thapar.edu email addresses are allowed to log in.");
           handleLogout();
@@ -91,11 +58,6 @@ function App() {
     }
   };
 
-  const handleAcceptDisclaimer = () => {
-    localStorage.setItem("disclaimerAccepted", "true");
-    setShowDisclaimer(false);
-  };
-
   if (isLoading) {
     return <Loader setIsLoading={setIsLoading} />;
   }
@@ -104,7 +66,6 @@ function App() {
     <WishlistProvider>
       <Router>
         {authError && <div className="error">{authError}</div>} {/* Display Error */}
-        {showDisclaimer && <DisclaimerModal onAccept={handleAcceptDisclaimer} />} {/* Show Disclaimer Modal */}
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Home />} />
