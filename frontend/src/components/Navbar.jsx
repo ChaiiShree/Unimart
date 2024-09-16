@@ -38,6 +38,13 @@ const Navbar = () => {
     onSearch(searchText);
   };
 
+  const mobileMenuCleanup = () => {
+    if (window.innerWidth <= 960) {
+      document.body.classList.toggle('menu-open');
+      setClicked(false);
+    }
+  };
+
   const handleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
@@ -92,8 +99,7 @@ const Navbar = () => {
               {(!user && (item.title === 'Wishlist' || item.title === 'Sell Your Product')) ? (
                 <button className="nav-links" onClick={() => {
                   handleLogin();
-                  document.body.classList.toggle('menu-open');
-                  setClicked(false);
+                  mobileMenuCleanup();
                 }}>
                   {item.icon && <i className={item.icon}></i>}
                   {item.title}
@@ -127,8 +133,7 @@ const Navbar = () => {
               <div className="user-actions">
                 <Link className="nav-links" to="/profile" 
                 onClick={() => {
-                  document.body.classList.toggle('menu-open');
-                  setClicked(false);
+                  mobileMenuCleanup();
                 }
                 }
                 >
@@ -137,8 +142,7 @@ const Navbar = () => {
                 </Link>
                 <button className="nav-links login-button" onClick={() => {
                   handleLogout();
-                  document.body.classList.toggle('menu-open');
-                  setClicked(false);
+                  mobileMenuCleanup();
                 }}>
                   Log Out
                 </button>
@@ -146,8 +150,7 @@ const Navbar = () => {
             ) : (
               <button className="nav-links login-button" onClick={() => {
                 handleLogin();
-                document.body.classList.toggle('menu-open');
-                setClicked(false);
+                mobileMenuCleanup();
               }}>
                 Log In
               </button>
