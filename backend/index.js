@@ -11,7 +11,7 @@ const app = express();
 const PORT = process.env.PORT || 7860;
 
 // Middleware
-const allowedOrigins = ['https://uniipal.com', 'https://uniipaladmin.vercel.app','http://localhost:3000','http://localhost:7860'];
+const allowedOrigins = ['https://uniipal.com', 'https://uniipaladmin.vercel.app'];
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -35,29 +35,25 @@ app.use(helmet());  // Default security headers
 // Custom Content Security Policy (CSP)
 app.use(helmet.contentSecurityPolicy({
   directives: {
-    defaultSrc: ["'self'", "https://uniipal.com", "https://unipalmark-backend.hf.space", "https://uniipaladmin.vercel.app/","http://localhost:3000",'http://localhost:7860'],
+    defaultSrc: ["'self'", "https://uniipal.com", "https://unipalmark-backend.hf.space", "https://uniipaladmin.vercel.app/"],
     scriptSrc: [
       "'self'", 
       // Avoid 'unsafe-inline' if possible. Consider refactoring your frontend to use external scripts.
       "'self'", 
       "https://uniipal.com", 
       "https://unipalmark-backend.hf.space", 
-      "https://uniipaladmin.vercel.app",
-      "http://localhost:3000",
-      "http://localhost:7860"
+      "https://uniipaladmin.vercel.app"
     ],
     objectSrc: ["'none'"],  // Prevent using plugins like Flash
-    imgSrc: ["'self'", "data:", "https://uniipal.com", "https://unipalmark-backend.hf.space", "https://uniipaladmin.vercel.app","http://localhost:3000","http://localhost:7860"],
-    connectSrc: ["'self'", "https://unipalmark-backend.hf.space","http://localhost:7860"],  // Allow requests to your backend
+    imgSrc: ["'self'", "data:", "https://uniipal.com", "https://unipalmark-backend.hf.space", "https://uniipaladmin.vercel.app"],
+    connectSrc: ["'self'", "https://unipalmark-backend.hf.space"],  // Allow requests to your backend
     fontSrc: ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"],  // Google Fonts allowed
     styleSrc: [
       "'self'", 
       // Avoid 'unsafe-inline' for styles if possible
       "https://fonts.googleapis.com", 
       "https://uniipal.com", 
-      "https://uniipaladmin.vercel.app",
-      "http://localhost:3000",
-      "http://localhost:7860"
+      "https://uniipaladmin.vercel.app"
     ],
     upgradeInsecureRequests: [],  // Ensure that insecure requests are upgraded to HTTPS
   },
