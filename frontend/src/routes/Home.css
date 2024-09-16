@@ -99,13 +99,15 @@
 .product-image-container {
   position: relative;
   width: 100%;
-  height: 300px; /* Increased image height */
+  height: 350px; /* Increased height to accommodate full image */
+  overflow: hidden; /* Ensure image doesn't overflow */
 }
 
 .product-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* Changed from cover to contain */
+  object-position: center; /* Center the image */
 }
 
 .wishlist-btn {
@@ -201,7 +203,7 @@
   }
 
   .product-image-container {
-    height: 200px; /* Adjust image height for smaller screens */
+    height: 250px; /* Adjusted height for smaller screens */
   }
 
   .product-card h2 {
@@ -215,11 +217,12 @@
 
 @media (max-width: 480px) {
   .products-grid {
-    grid-template-columns: 1fr; /* 1 product per row for very small screens */
+    grid-template-columns: repeat(2, 1fr); /* Changed to 2 products per row */
+    gap: 0.5rem; /* Reduced gap for very small screens */
   }
 
   .product-image-container {
-    height: 150px; /* Smaller image height for tiny screens */
+    height: 200px; /* Adjusted height for very small screens */
   }
 
   .product-details {
@@ -232,5 +235,17 @@
 
   .product-description, .product-hostel, .product-price {
     font-size: 0.75rem;
+  }
+}
+
+/* New media query for larger phones like iPhone 11 */
+@media (min-width: 481px) and (max-width: 767px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .product-image-container {
+    height: 225px;
   }
 }
