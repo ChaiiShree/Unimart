@@ -11,7 +11,7 @@ const app = express();
 const PORT = process.env.PORT || 7860;
 
 // Middleware
-const allowedOrigins = ['https://uniipal.com', 'https://uniipaladmin.vercel.app'];
+const allowedOrigins = ['https://uniipal.com', 'https://uniipaladmin.vercel.app','http://localhost:3000'];
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -35,17 +35,18 @@ app.use(helmet());  // Default security headers
 // Custom Content Security Policy (CSP)
 app.use(helmet.contentSecurityPolicy({
   directives: {
-    defaultSrc: ["'self'", "https://uniipal.com", "https://unipalmark-backend.hf.space", "https://uniipaladmin.vercel.app/"],
+    defaultSrc: ["'self'", "https://uniipal.com", "https://unipalmark-backend.hf.space", "https://uniipaladmin.vercel.app/","http://localhost:3000"],
     scriptSrc: [
       "'self'", 
       // Avoid 'unsafe-inline' if possible. Consider refactoring your frontend to use external scripts.
       "'self'", 
       "https://uniipal.com", 
       "https://unipalmark-backend.hf.space", 
-      "https://uniipaladmin.vercel.app"
+      "https://uniipaladmin.vercel.app",
+      "http://localhost:3000"
     ],
     objectSrc: ["'none'"],  // Prevent using plugins like Flash
-    imgSrc: ["'self'", "data:", "https://uniipal.com", "https://unipalmark-backend.hf.space", "https://uniipaladmin.vercel.app"],
+    imgSrc: ["'self'", "data:", "https://uniipal.com", "https://unipalmark-backend.hf.space", "https://uniipaladmin.vercel.app","http://localhost:3000"],
     connectSrc: ["'self'", "https://unipalmark-backend.hf.space"],  // Allow requests to your backend
     fontSrc: ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"],  // Google Fonts allowed
     styleSrc: [
@@ -53,7 +54,8 @@ app.use(helmet.contentSecurityPolicy({
       // Avoid 'unsafe-inline' for styles if possible
       "https://fonts.googleapis.com", 
       "https://uniipal.com", 
-      "https://uniipaladmin.vercel.app"
+      "https://uniipaladmin.vercel.app",
+      "http://localhost:3000"
     ],
     upgradeInsecureRequests: [],  // Ensure that insecure requests are upgraded to HTTPS
   },
