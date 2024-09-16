@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MenuItems } from "./MenuItems";
 import { auth, provider } from "../firebaseConfig";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import logo from "../assets/unipal_logo.png";
 import "./NavbarStyles.css";
 
-const Navbar = ({ onSearch }) => {
+const Navbar = () => {
   const [clicked, setClicked] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [user, setUser] = useState(null);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const navigate = useNavigate(); // Get the navigate function
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -23,6 +24,12 @@ const Navbar = ({ onSearch }) => {
   const handleClick = () => {
     setClicked(!clicked);
     document.body.classList.toggle('menu-open');
+  };
+
+  let onSearch = (text) => {
+    if (text.length > 2) {
+      navigate(`/search/${text}`); // Navigate to the search page
+    }
   };
 
   const handleSearchChange = (e) => {

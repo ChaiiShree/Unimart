@@ -12,6 +12,7 @@ import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import Disclaimer from "./components/Disclaimer";
 import { BACKEND_URL } from "./config";
 import Navbar from "./components/Navbar";
+import Search from "./components/Search";
 
 // Protected Route Component
 const ProtectedRoute = ({ user, children }) => {
@@ -119,10 +120,12 @@ function App() {
               <Profile />
             </ProtectedRoute>
           }/>
-          <Route path="*" element={<Navigate to="/home" />} />
+          <Route path="/search/:searchTerm" element={<Search />} />
+          <Route path="*" element={<Navigate to="/home" />} />      
         </Routes>
       </Router>
     </WishlistProvider>
+    
   );
 }
 

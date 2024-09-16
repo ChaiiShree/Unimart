@@ -470,3 +470,28 @@ app.put('/api/user/disclaimer/:uid', async (req, res) => {
   }
 });
 
+
+
+
+app.get('/api/products/search', async (req, res) => {
+  try {
+    const searchTerm = req.query.q; 
+
+    const products = await Product.find({ 
+      productName: { $regex: searchTerm, $options: 'i' } 
+    });
+
+    for (let i = 0; i < products.length; i++) {
+      let oldImages = products[i].images;
+      products[i].images = [];
+      for (let j = 0; j < oldImages.length; j++) {
+        products[i].images.push(`https://unipalmark-backend.hf.space/api/products/${products[i]._id}/image/${j}`);
+      }
+    }
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error('Error searching products:', error);
+    res.status(500).json({ message: `Error searching products: ${error.message}` });
+  }
+});
