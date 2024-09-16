@@ -103,18 +103,12 @@ button:hover {
 
 /* Remove button for product items */
 .remove-button {
-  background-color: transparent;
-  color: white;
+  padding: 10px 20px;
+  background-color: #e20e0e;
+  color: #fff;
   border: none;
-  border-radius: 50%;
-  padding: 5px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 1.5rem;
-  line-height: 1;
 }
 
 .remove-button:hover {

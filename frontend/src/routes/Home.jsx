@@ -110,11 +110,11 @@ const Home = () => {
 
     return filteredProducts.map((product) => (
       <div key={product._id} className="product-card">
-        <div className="product-image-container">
-          <img src={product.images[0]} alt={product.productName} className="product-image" />
-          {/* <button className="wishlist-btn" onClick={() => handleAddToWishlist(product)}>
-            <FaHeart />
-          </button> */}
+        {/* Updated product image container with background image */}
+        <div 
+          className="product-image-container" 
+          style={{ backgroundImage: `url(${product.images[0]})` }}
+        >
         </div>
         <div className="product-details">
           <h2>{product.productName}</h2>
