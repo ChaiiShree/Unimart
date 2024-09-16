@@ -50,7 +50,7 @@ input {
 /* Button styling */
 button {
   padding: 10px 20px;
-  background-color: transparent;
+  background-color: #f39c12;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -59,7 +59,7 @@ button {
 
 /* Button hover effects */
 button:hover {
-  background-color: #f39c12;
+  background-color: #ff9d00;
 }
 
 /* Products display styling (similar to wishlist items) */
@@ -73,6 +73,8 @@ button:hover {
   box-sizing: border-box;
   background-color: #1e1e1e; /* Dark background for product items */
   position: relative;
+  height: fit-content;
+  width: fit-content;
 }
 
 /* Product image styling */

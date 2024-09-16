@@ -17,12 +17,13 @@
   position: sticky;
   top: 90px;
   z-index: 10;
-  background-color: rgba(28, 28, 28, 0.9);
+  background-color: #121212;
   padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
   margin-bottom: 2rem;
+  width: 16%;
 }
 
 .filter-toggle {
@@ -98,16 +99,20 @@
 .product-image-container {
   position: relative;
   width: 100%;
-  height: 300px; /* Increased height */
+  height: 300px; /* Make sure this height is large enough */
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .product-image {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Ensure the full image is visible */
+  object-fit: contain; /* Ensure the full image is visible while maintaining aspect ratio */
   object-position: center;
 }
+
 
 .wishlist-btn {
   position: absolute;
@@ -203,8 +208,8 @@
   }
 
   .products-grid {
-    grid-template-columns: repeat(2, 1fr); /* Two products per row */
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr); /* 2 products per row */
+    gap: 1rem; /* Smaller gap */
   }
 
   .product-image-container {
@@ -222,12 +227,12 @@
 
 @media (max-width: 480px) {
   .products-grid {
-    grid-template-columns: repeat(2, 1fr); /* Two products per row */
-    gap: 0.5rem;
+    grid-template-columns: repeat(2, 1fr); /* Changed to 2 products per row */
+    gap: 0.5rem; /* Reduced gap for very small screens */
   }
 
   .product-image-container {
-    height: 200px; /* Adjusted height for small screens */
+    height: 200px; /* Adjusted height for very small screens */
   }
 
   .product-details {
@@ -246,11 +251,7 @@
 /* New media query for larger phones like iPhone 11 */
 @media (min-width: 481px) and (max-width: 767px) {
   .products-grid {
-    grid-template-columns: repeat(2, 1fr); /* Two products per row */
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.75rem;
-  }
-
-  .product-image-container {
-    height: 225px;
   }
 }
