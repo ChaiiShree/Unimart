@@ -13,12 +13,11 @@
   margin-top: 80px;
 }
 
-/* Updated filter section */
 .filter-section {
   position: sticky;
   top: 90px;
   z-index: 10;
-  background-color: rgba(28, 28, 28, 0.5); /* Semi-transparent background */
+  background-color: rgba(28, 28, 28, 0.9);
   padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -99,15 +98,15 @@
 .product-image-container {
   position: relative;
   width: 100%;
-  height: 350px; /* Increased height to accommodate full image */
-  overflow: hidden; /* Ensure image doesn't overflow */
+  height: 300px; /* Increased height */
+  overflow: hidden;
 }
 
 .product-image {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Changed from cover to contain */
-  object-position: center; /* Center the image */
+  object-fit: contain; /* Ensure the full image is visible */
+  object-position: center;
 }
 
 .wishlist-btn {
@@ -138,22 +137,28 @@
   font-size: 15px;
 }
 
-/* Updated product details */
 .product-details {
-  padding: 0.75rem; /* Reduced padding */
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Align content in a flexible way */
+  flex-grow: 1;
 }
 
 .product-card h2 {
   color: #df921c;
-  font-size: 1rem; /* Smaller title */
+  font-size: 1.2rem;
   margin-bottom: 0.5rem;
 }
 
-.product-description, .product-hostel, .product-price {
-  font-size: 0.85rem; /* Reduced font size for compact view */
+.product-description {
+  font-size: 0.9rem;
+  color: #b0b0b0;
+  margin-bottom: 0.5rem;
+  flex-grow: 1;
+}
+
+.product-hostel, .product-price {
+  font-size: 0.9rem;
   margin-bottom: 0.5rem;
 }
 
@@ -198,8 +203,8 @@
   }
 
   .products-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 products per row */
-    gap: 1rem; /* Smaller gap */
+    grid-template-columns: repeat(2, 1fr); /* Two products per row */
+    gap: 1rem;
   }
 
   .product-image-container {
@@ -207,30 +212,30 @@
   }
 
   .product-card h2 {
-    font-size: 0.95rem; /* Adjusted for smaller screen readability */
+    font-size: 0.95rem;
   }
 
   .product-description, .product-hostel, .product-price {
-    font-size: 0.8rem; /* Adjusted for smaller screens */
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
   .products-grid {
-    grid-template-columns: repeat(2, 1fr); /* Changed to 2 products per row */
-    gap: 0.5rem; /* Reduced gap for very small screens */
+    grid-template-columns: repeat(2, 1fr); /* Two products per row */
+    gap: 0.5rem;
   }
 
   .product-image-container {
-    height: 200px; /* Adjusted height for very small screens */
+    height: 200px; /* Adjusted height for small screens */
   }
 
   .product-details {
-    padding: 0.5rem; /* Reduced padding further */
+    padding: 0.5rem;
   }
 
   .product-card h2 {
-    font-size: 0.85rem; /* Even smaller for tiny screens */
+    font-size: 0.85rem;
   }
 
   .product-description, .product-hostel, .product-price {
@@ -241,7 +246,7 @@
 /* New media query for larger phones like iPhone 11 */
 @media (min-width: 481px) and (max-width: 767px) {
   .products-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* Two products per row */
     gap: 0.75rem;
   }
 
