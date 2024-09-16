@@ -13,11 +13,12 @@
   margin-top: 80px;
 }
 
+/* Updated filter section */
 .filter-section {
   position: sticky;
   top: 90px;
   z-index: 10;
-  background-color: rgba(28, 28, 28, 0.9);
+  background-color: rgba(28, 28, 28, 0.5); /* Semi-transparent background */
   padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -94,10 +95,11 @@
   box-shadow: 0 6px 12px rgba(223, 146, 28, 0.2);
 }
 
+/* Updated product image container */
 .product-image-container {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 300px; /* Increased image height */
 }
 
 .product-image {
@@ -134,28 +136,22 @@
   font-size: 15px;
 }
 
+/* Updated product details */
 .product-details {
-  padding: 1rem;
+  padding: 0.75rem; /* Reduced padding */
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  justify-content: space-between; /* Align content in a flexible way */
 }
 
 .product-card h2 {
   color: #df921c;
-  font-size: 1.2rem;
+  font-size: 1rem; /* Smaller title */
   margin-bottom: 0.5rem;
 }
 
-.product-description {
-  font-size: 0.9rem;
-  color: #b0b0b0;
-  margin-bottom: 0.5rem;
-  flex-grow: 1;
-}
-
-.product-hostel, .product-price {
-  font-size: 0.9rem;
+.product-description, .product-hostel, .product-price {
+  font-size: 0.85rem; /* Reduced font size for compact view */
   margin-bottom: 0.5rem;
 }
 
@@ -195,34 +191,46 @@
     margin-bottom: 1rem;
   }
 
-  .main_section{
+  .main_section {
     margin-top: 3rem;
   }
 
   .products-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr); /* 2 products per row */
+    gap: 1rem; /* Smaller gap */
+  }
+
+  .product-image-container {
+    height: 200px; /* Adjust image height for smaller screens */
+  }
+
+  .product-card h2 {
+    font-size: 0.95rem; /* Adjusted for smaller screen readability */
+  }
+
+  .product-description, .product-hostel, .product-price {
+    font-size: 0.8rem; /* Adjusted for smaller screens */
   }
 }
 
 @media (max-width: 480px) {
   .products-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* 1 product per row for very small screens */
   }
 
   .product-image-container {
-    height: 250px;
+    height: 150px; /* Smaller image height for tiny screens */
   }
 
   .product-details {
-    padding: 0.75rem;
+    padding: 0.5rem; /* Reduced padding further */
   }
 
   .product-card h2 {
-    font-size: 1.1rem;
+    font-size: 0.85rem; /* Even smaller for tiny screens */
   }
 
   .product-description, .product-hostel, .product-price {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
   }
 }
