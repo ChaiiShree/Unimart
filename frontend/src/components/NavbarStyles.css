@@ -12,6 +12,7 @@
     0 0 20px rgba(248, 188, 69, 0.2),
     0 0 30px rgba(248, 188, 69, 0.1),
     inset 0 0 15px rgba(248, 188, 69, 0.1);
+    font-family: 'Merriweather', serif;
 }
 
 a.navbar-logo {
@@ -82,6 +83,10 @@ body.menu-open {
   color: #f39c12;
 }
 
+body.menu-open {
+  overflow: hidden; /* Prevent scrolling of the background */
+}
+
 .nav-menu {
   display: flex;
   list-style: none;
@@ -98,20 +103,42 @@ body.menu-open {
   font-weight: 500;
   transition: all 0.3s ease;
   border-radius: 20px;
+  background-color: transparent; /* Transparent background by default */
 }
 
+/* Hover effect for nav-links */
 .nav-links:hover {
-  background-color: rgba(248, 188, 69, 0.1);
+  background-color: rgba(248, 188, 69, 0.1); /* Apply background color on hover */
+  color: #f8bc45; /* Change text color on hover */
+}
+
+/* Additional styling for the nav-links button when logged out */
+button.nav-links {
+  background-color: transparent; /* Keep background transparent for buttons */
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-radius: 20px;
+  font-family: 'Merriweather', serif;
+}
+
+button.nav-links:hover {
+  background-color: rgba(248, 188, 69, 0.1); /* Add hover background only */
   color: #f8bc45;
 }
+
 
 .nav-links i {
   margin-right: 0.5rem;
 }
 
+/* Special styling for the 'Log In' and 'Log Out' buttons */
 .login-button {
-  background-color: #f8bc45;
-  color: #1a1a1a;
+  background-color: #f8bc45; /* Background color for 'Log In' and 'Log Out' */
+  color: #121212; /* Dark text color */
   border: none;
   padding: 0.7rem 1.5rem;
   border-radius: 20px;
@@ -121,8 +148,9 @@ body.menu-open {
 }
 
 .login-button:hover {
-  background-color: #f39c12;
-  transform: translateY(-2px);
+  background-color: #f39c12; /* Darker shade on hover */
+  transform: translateY(-2px); /* Slight upward movement on hover */
+  color: #fff; /* Change text color on hover */
 }
 
 .menu-icon {
@@ -170,7 +198,10 @@ body.menu-open {
     transition: all 0.5s ease;
   }
 
-
+  .nav-links:hover {
+    background-color: rgba(248, 188, 69, 0.1);
+    color: #f8bc45;
+  }
 
   .nav-menu.active {
     background: #2c2c2c;
@@ -179,18 +210,23 @@ body.menu-open {
     transition: all 0.5s ease;
     z-index: 1;
     padding-top: 1rem;
+    height:auto;
+    border-radius: 4px;
+    overflow: hidden;
   }
 
   .nav-links {
     text-align: center;
     padding: 1rem;
     /* width: 100%; */
+    /* background-color: red; */
     display: table;
   }
 
-  .nav-links:hover {
+  a.nav-links:hover {
     background-color: rgba(248, 188, 69, 0.1);
-    border-radius: 0;
+    border-radius: 4px;
+    color: #f39c12;
   }
 
   .menu-icon {
@@ -208,6 +244,7 @@ body.menu-open {
     width: 100%;
     margin-top: 1rem;
   }
+  
 
   .user-actions {
     flex-direction: column;
