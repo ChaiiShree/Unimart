@@ -90,6 +90,7 @@ const Navbar = ({ onSearch }) => {
               ) : (
                 <Link className="nav-links" to={item.url} onClick={() => {
                   document.body.classList.toggle('menu-open');
+                  setClicked(false);
                 }}>
                   {item.icon && <i className={item.icon}></i>}
                   {item.title}
