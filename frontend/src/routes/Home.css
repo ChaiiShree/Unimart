@@ -17,11 +17,11 @@
   position: sticky;
   top: 90px;
   z-index: 10;
-  background-color: transparent; /* Changed to transparent */
+  background-color: rgba(28, 28, 28, 0.9);
   padding: 1rem;
   border-radius: 10px;
-  box-shadow: none; /* Removed box-shadow */
-  backdrop-filter: none; /* Removed blur effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
   margin-bottom: 2rem;
 }
 
@@ -97,7 +97,7 @@
 .product-image-container {
   position: relative;
   width: 100%;
-  height: 250px; /* Increased height from 200px to 250px */
+  height: 200px;
 }
 
 .product-image {
@@ -138,7 +138,7 @@
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  flex-grow: 0; /* Changed from 1 to 0 to prevent unnecessary stretching */
+  flex-grow: 1;
 }
 
 .product-card h2 {
@@ -151,7 +151,7 @@
   font-size: 0.9rem;
   color: #b0b0b0;
   margin-bottom: 0.5rem;
-  flex-grow: 0; /* Changed from 1 to 0 to prevent unnecessary stretching */
+  flex-grow: 1;
 }
 
 .product-hostel, .product-price {
@@ -207,47 +207,22 @@
 
 @media (max-width: 480px) {
   .products-grid {
-    grid-template-columns: repeat(2, 1fr); /* Changed from 1fr to repeat(2, 1fr) */
-    gap: 0.5rem; /* Reduced gap for smaller screens */
-  }
-
-  .product-card {
-    min-width: 0; /* Allow cards to shrink below their default size */
+    grid-template-columns: 1fr;
   }
 
   .product-image-container {
-    height: 180px; /* Reduced height for smaller screens */
+    height: 250px;
   }
 
   .product-details {
-    padding: 0.5rem; /* Reduced padding for smaller screens */
+    padding: 0.75rem;
   }
 
   .product-card h2 {
-    font-size: 1rem; /* Reduced font size for smaller screens */
+    font-size: 1.1rem;
   }
 
   .product-description, .product-hostel, .product-price {
-    font-size: 0.8rem; /* Reduced font size for smaller screens */
-  }
-}
-
-/* New media query for larger phones and small tablets */
-@media (min-width: 481px) and (max-width: 767px) {
-  .products-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-  }
-
-  .product-image-container {
-    height: 200px;
-  }
-}
-
-/* New media query for adjusting product size based on screen width */
-@media (max-width: 767px) {
-  .product-card {
-    width: calc(50vw - 1.5rem); /* Adjust card width based on viewport width */
-    max-width: 250px; /* Set a maximum width for larger screens */
+    font-size: 0.85rem;
   }
 }
