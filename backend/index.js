@@ -11,7 +11,7 @@ const app = express();
 const PORT = process.env.PORT || 7860;
 
 // Middleware
-const allowedOrigins = ['https://uniipal.com', 'https://uniipaladmin.vercel.app'];
+const allowedOrigins = ['https://uniipal.com', 'https://uniipaladmin.vercel.app', 'http://localhost:5173'];
 
 app.use(cors({
   origin: function (origin, callback) {
