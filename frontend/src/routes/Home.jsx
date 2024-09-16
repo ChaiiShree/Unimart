@@ -5,37 +5,46 @@ import { useWishlist } from "../components/WishlistContext";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../firebaseConfig'; // Firebase auth configuration
+import { auth } from '../firebaseConfig';
 import firebase from 'firebase/compat/app';
-import "./Home.css";
 import { BACKEND_URL } from "../config";
+import { FaHeart, FaFilter } from 'react-icons/fa';
+import Lottie from "react-lottie";
+import loadingAnimation from "../animations/loading.json"; // Make sure to add this JSON file
+import "./Home.css";
 
 const Home = () => {
   const { addToWishlist } = useWishlist();
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [category, setCategory] = useState(""); 
+  const [category, setCategory] = useState("");
   const [hostel, setHostel] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [user] = useAuthState(auth); // Get the current user
+  const [user] = useAuthState(auth);
+  const [loading, setLoading] = useState(true);
+
+  const lottieOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: loadingAnimation,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice"
+    }
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(BACKEND_URL + "api/products");
-        const text = await response.text();
-        
-        try {
-          const data = JSON.parse(text);
-          setProducts(data);
-          setFilteredProducts(data); // Initialize filtered products
-        } catch (parseError) {
-          console.error("Error parsing JSON:", parseError);
-          console.error("Response text:", text);
-        }
+        const response = await fetch(`${BACKEND_URL}api/products`);
+        const data = await response.json();
+        setProducts(data);
+        setFilteredProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
+        toast.error("Failed to load products. Please try again later.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -44,7 +53,7 @@ const Home = () => {
 
   useEffect(() => {
     filterProducts();
-  }, [category, hostel, searchText]); // Update filtered products when category, hostel, or searchText changes
+  }, [category, hostel, searchText, products]);
 
   const filterProducts = () => {
     let tempProducts = products;
@@ -67,14 +76,13 @@ const Home = () => {
   };
 
   const handleSearch = (text) => {
-    setSearchText(text); // Update search text state
+    setSearchText(text);
   };
 
   const handleAddToWishlist = async (product) => {
-    // Check if user is logged in
     if (!user) {
       toast.warn("Please log in to add items to your wishlist");
-      auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()); // Redirect to login
+      auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
       return;
     }
 
@@ -82,31 +90,53 @@ const Home = () => {
     if (result.success) {
       toast.success("Added to Wishlist");
     } else {
-      toast.warn(result.message); // Use the specific error message from the result
+      toast.warn(result.message);
     }
   };
 
   const renderProducts = () => {
+    if (loading) {
+      return (
+        <div className="loading">
+          <Lottie options={lottieOptions} height={150} width={150} />
+          <p>Loading products...</p>
+        </div>
+      );
+    }
+
+    if (filteredProducts.length === 0) {
+      return <div className="no-products">No products found.</div>;
+    }
+
     return filteredProducts.map((product) => (
       <div key={product._id} className="product-card">
-        <img src={`${product.images[0]}`} alt={product.productName} className="product-image" />
+        <div className="product-image-container">
+          <img src={product.images[0]} alt={product.productName} className="product-image" />
+          {/* <button className="wishlist-btn" onClick={() => handleAddToWishlist(product)}>
+            <FaHeart />
+          </button> */}
+        </div>
         <div className="product-details">
           <h2>{product.productName}</h2>
-          <p>{product.description}</p>
-          <p>Hostel: {product.hostel}</p>
-          <p>Price: ₹{product.price}</p>
-          <button onClick={() => handleAddToWishlist(product)}>Add to Wishlist</button>
+          <p className="product-description">{product.description}</p>
+          <p className="product-hostel">Hostel: {product.hostel}</p>
+          <p className="product-price">₹{product.price}</p>
+
+          <button className="btn_classic" onClick={() => handleAddToWishlist(product)}>
+            Add to Wishlist
+          </button>
         </div>
       </div>
     ));
   };
 
   return (
-    <>
-      <Navbar onSearch={handleSearch} />
-      <div className="products-page">
-        <div className="filter-box">
-          <button onClick={() => setShowFilters(!showFilters)}>Filter</button>
+    <div className="home-container">
+      <div className="products-page page">
+        <div className="filter-section">
+          <button onClick={() => setShowFilters(!showFilters)} className="filter-toggle">
+            <FaFilter /> {showFilters ? 'Hide Filters' : 'Show Filters'}
+          </button>
           {showFilters && (
             <div className="filters">
               <select value={category} onChange={(e) => setCategory(e.target.value)}>
@@ -154,8 +184,8 @@ const Home = () => {
         </div>
       </div>
       <Footer />
-      <ToastContainer />
-    </>
+      <ToastContainer position="bottom-right" autoClose={3000} />
+    </div>
   );
 };
 

@@ -1,32 +1,41 @@
 /* Navbar Styling */
 .Navbar {
-  margin-bottom: 60px; /* Add margin to the bottom of the Navbar */
+  margin-bottom: 60px; 
 }
 
 /* Sell Product Container Styling */
 .sell-product-container {
   background-color: #000;
   color: #fff;
-  font-family: 'Merriweather', serif;
-  padding: 80px 50px 50px; /* Add padding to the top */
+  /* font-family: 'Merriweather', serif; */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+  padding: 80px 50px 50px; 
   text-align: center;
   margin-bottom: 30px;
 }
 
+.footer{
+  font-family: 'Merriweather', serif;
+}
 .sell-product-container h2 {
   color: #df912c;
   font-size: 40px;
   font-weight: bold;
 }
 
+/* Form Container Styling */
+.form-container {
+  display: flex;
+  justify-content: center; /* Horizontally center the form */
+  margin-bottom: 30px; /* Adjust as needed */
+}
+
 /* Form Group Styling */
 .form-group {
-  margin-bottom: 450px;
-  display: block; /* Change to block for FormField component */
   width: 85%;
-  margin: 0 auto; /* Center align the form */
-  max-width: 400px; /* Limit the maximum width of the form */
-  margin-bottom: 10px;
+  max-width: 400px; 
+  margin-bottom: 20px; /* Consistent spacing between form groups */
 }
 
 .form-group label {
@@ -41,19 +50,25 @@
 .form-group select {
   width: 100%;
   padding: 10px;
-  border: none;
+  border: 1px solid #555; /* Subtle border for better visibility */
   border-radius: 5px;
   background-color: #333;
   color: #fff;
-  box-sizing: border-box; /* Include padding and border in the width */
+  box-sizing: border-box; 
 }
 
 .form-group select {
+  -webkit-appearance: none; /* For Chrome/Safari */
+  -moz-appearance: none; /* For Firefox */
   appearance: none;
+  background-image: url('path/to/dropdown-arrow.svg'); /* Add a dropdown arrow */
+  background-repeat: no-repeat;
+  background-position: right 10px center; /* Adjust position as needed */
+  padding-right: 30px; /* Add space for the arrow */
 }
 
 .form-group input[type="file"] {
-  padding: 10px; /* Adjust padding */
+  padding: 10px; 
 }
 
 /* Submit Button Styling */
@@ -62,9 +77,9 @@ button[type="submit"] {
   background-color: #df912c;
   border: none;
   color: #fff;
-  border-top: 10px;
+  border-radius: 5px; /* Add rounded corners to the button */
   cursor: pointer;
-  margin-top: 20px; /* Adjust this value as needed to shift the button lower */
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
 }
 
 button[type="submit"]:hover {

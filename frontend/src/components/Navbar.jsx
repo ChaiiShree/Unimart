@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import "./NavbarStyles.css";
-import { MenuItems } from "./MenuItems";
 import { Link } from "react-router-dom";
-import logo from "../assets/unipal_logo.png";
+import { MenuItems } from "./MenuItems";
 import { auth, provider } from "../firebaseConfig";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import logo from "../assets/unipal_logo.png";
+import "./NavbarStyles.css";
 
 const Navbar = ({ onSearch }) => {
   const [clicked, setClicked] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [user, setUser] = useState(null);
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -21,13 +22,13 @@ const Navbar = ({ onSearch }) => {
 
   const handleClick = () => {
     setClicked(!clicked);
-    document.body.classList.toggle('no-scroll', clicked);
+    document.body.classList.toggle('menu-open');
   };
 
   const handleSearchChange = (e) => {
     const searchText = e.target.value;
     setSearchText(searchText);
-    onSearch(searchText); // Call onSearch callback with current search text
+    onSearch(searchText);
   };
 
   const handleLogin = async () => {
@@ -54,11 +55,15 @@ const Navbar = ({ onSearch }) => {
     }
   };
 
+  const handleSearchIconClick = () => {
+    setShowMobileSearch(!showMobileSearch);
+  };
+
   return (
-    <nav className="NavbarItems">
-      <div className="navbar-left">
+    <nav className="navbar">
+      <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <img alt="UniPal Logo" src={logo} width={110} />
+          <img src={logo} alt="UniPal Logo" />
         </Link>
         <div className="search-bar">
           <input
@@ -71,43 +76,59 @@ const Navbar = ({ onSearch }) => {
             <i className="fas fa-search"></i>
           </button>
         </div>
-      </div>
-      <div className="menu-icons" onClick={handleClick}>
-        <i className={clicked ? "fas fa-times" : "fas fa-bars"}></i>
-      </div>
-      <ul className={clicked ? "nav-menu active" : "nav-menu"}>
-        {MenuItems.map((item, index) => (
-          <li key={index}>
-            {(!user && (item.title === 'Wishlist' || item.title === 'Sell Your Product')) ? (
-              <button className="nav-links login-button" onClick={handleLogin}>
-                {item.icon && <i className={item.icon}></i>}
-                {item.title}
+        <div className="menu-icon" onClick={handleClick}>
+          <i className={clicked ? "fas fa-times" : "fas fa-bars"}></i>
+        </div>
+        <ul className={clicked ? "nav-menu active" : "nav-menu"}>
+          {MenuItems.map((item, index) => (
+            <li key={index}>
+              {(!user && (item.title === 'Wishlist' || item.title === 'Sell Your Product')) ? (
+                <button className="nav-links" onClick={handleLogin}>
+                  {item.icon && <i className={item.icon}></i>}
+                  {item.title}
+                </button>
+              ) : (
+                <Link className="nav-links" to={item.url} onClick={() => {
+                  document.body.classList.toggle('menu-open');
+                }}>
+                  {item.icon && <i className={item.icon}></i>}
+                  {item.title}
+                </Link>
+              )}
+            </li>
+          ))}
+          {showMobileSearch && (
+            <li className="mobile-search-bar">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchText}
+                onChange={handleSearchChange}
+              />
+              <button>
+                <i className="fas fa-search"></i>
               </button>
+            </li>
+          )}
+          <li>
+            {user ? (
+              <div className="user-actions">
+                <Link className="nav-links" to="/profile">
+                  <i className="fa fa-user"></i>
+                  Profile
+                </Link>
+                <button className="nav-links login-button" onClick={handleLogout}>
+                  Log Out
+                </button>
+              </div>
             ) : (
-              <Link className={item.cname} to={item.url}>
-                {item.icon && <i className={item.icon}></i>}
-                {item.title}
-              </Link>
+              <button className="nav-links login-button" onClick={handleLogin}>
+                Log In
+              </button>
             )}
           </li>
-        ))}
-        <li className="login-button-container">
-          {user ? (
-            <>
-              <Link className="nav-links login-button" to="/profile"><i className="fa fa-user"></i>
-                Profile
-              </Link>
-              <button className="nav-links login-button" onClick={handleLogout}>
-                Log Out
-              </button>
-            </>
-          ) : (
-            <button className="nav-links login-button" onClick={handleLogin}>
-              Log In
-            </button>
-          )}
-        </li>
-      </ul>
+        </ul>
+      </div>
     </nav>
   );
 };

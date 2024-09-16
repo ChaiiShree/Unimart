@@ -57,8 +57,7 @@ const Wishlist = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="wishlist-container">
+      <div className="wishlist-container page">
         <h1>Wishlist</h1>
         {wishlist.length > 0 ? (
           renderWishlistItems()

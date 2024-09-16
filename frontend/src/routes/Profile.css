@@ -1,6 +1,8 @@
 body {
   background-color: black;
-  font-family: 'Merriweather', serif;
+  /* font-family: 'Merriweather', serif; */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
 }
 
 .profile-container {
@@ -54,57 +56,4 @@ button {
 
 button:hover {
   background-color: #1565c0;
-}
-
-/* New styles for products section */
-.product-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.product-item {
-  background-color: #121212;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  border: 1px solid white; /* Border color */
-  position: relative; /* Position relative for absolute button */
-}
-
-.product-image {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-right: 20px;
-}
-
-.product-details {
-  flex: 1;
-  text-align: left;
-}
-
-.product-details h3 {
-  margin: 0 0 10px;
-  color: #df912c;
-}
-
-.product-details p {
-  margin: 5px 0;
-}
-
-.product-details button {
-  padding: 5px 10px;
-  background-color: #df912c;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.product-details button:hover {
-  background-color: #ffae42;
 }

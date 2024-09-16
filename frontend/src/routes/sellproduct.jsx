@@ -214,8 +214,7 @@ function SellProduct() {
   
   return (
     <>
-      <Navbar />
-      <div className="sell-product-container">
+      <div className="sell-product-container page">
         <h2>Sell Your Product</h2>
         <form className="sell-product-form" onSubmit={handleSubmit}>
           <FormField

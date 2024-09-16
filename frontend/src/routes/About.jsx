@@ -17,7 +17,7 @@ import "./About.css";
 const About = () => {
   return (
     <>
-      <Navbar />
+      <div className="page">
       <div className="hero">
         <div className="hero-text">
           <h1>About <span className="highlight">UniiPal</span></h1>
@@ -138,6 +138,7 @@ const About = () => {
           <p>
             Join us in building a greener, more connected, and supportive college community. Together, we can make a difference—one transaction at a time.
           </p>
+        </div>
         </div>
       </div>
       

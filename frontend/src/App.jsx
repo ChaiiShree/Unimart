@@ -10,6 +10,8 @@ import { WishlistProvider } from "./components/WishlistContext";
 import { auth, provider } from "./firebaseConfig";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import Disclaimer from "./components/Disclaimer";
+import { BACKEND_URL } from "./config";
+import Navbar from "./components/Navbar";
 
 // Protected Route Component
 const ProtectedRoute = ({ user, children }) => {
@@ -93,9 +95,11 @@ function App() {
     <WishlistProvider>
       <Router>
         {authError && <div className="error">{authError}</div>} {/* Display Error */}
+        <Navbar />
 
         {showDisclaimer && <Disclaimer onClose={() => setShowDisclaimer(false)} />} {/* Display Disclaimer */}
         
+
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Home />} />

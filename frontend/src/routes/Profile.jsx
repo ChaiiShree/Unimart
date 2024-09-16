@@ -110,8 +110,7 @@ const Profile = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="profile-container">
+      <div className="profile-container page">
         <div className="profile-content">
           <h1>Profile</h1>
           {user && (
