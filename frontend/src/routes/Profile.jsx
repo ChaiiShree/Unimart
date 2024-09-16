@@ -190,7 +190,7 @@ const Profile = () => {
                     <p>{product.description}</p>
                     <p>Price: {product.price}</p>
                     <p>Hostel: {product.hostel}</p>
-                    <button className="remove-button" onClick={() => handleRemoveProduct(product._id, product.productName)}>Remove</button>
+                    <button className="remove-button" onClick={() => handleRemoveProduct(product._id, product.productName)}>X</button>
                   </div>
                 </li>
               ))}

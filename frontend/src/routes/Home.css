@@ -95,26 +95,24 @@
   box-shadow: 0 6px 12px rgba(223, 146, 28, 0.2);
 }
 
+/* Updated product image container */
 .product-image-container {
   position: relative;
   width: 100%;
-  height: 300px; /* Adjust this height as needed */
-  background-size: contain; /* Use 'cover' to fill the container, 'contain' to fit inside */
-  background-position: center;
-  background-repeat: no-repeat;
+  height: 300px; /* Adjust as needed */
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-/* Ensure the image fills the container fully */
-/* .product-image { */
-  /* width: 100%; */
-  /* height: 100%; */
-  /* object-fit: cover; Ensure the image covers the container fully without distortion */
-  /* object-position: center; Center the image within the container */
-/* } */
+/* Ensure the image fully fills the container */
+.product-image {
+  width: 100%; 
+  height: 100%; 
+  object-fit: fill; /* Ensure the image stretches to fill the container */
+  object-position: center; /* Center the image in the container */
+  max-width: none; /* Remove any potential max-width restrictions */
+  max-height: none; /* Remove any potential max-height restrictions */
+}
+
 
 .wishlist-btn {
   position: absolute;
