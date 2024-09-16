@@ -11,14 +11,16 @@ const app = express();
 const PORT = process.env.PORT || 7860;
 
 // Middleware
-const allowedOrigins = ['https://uniipal.com', 'https://uniipaladmin.vercel.app', 'http://localhost:3000'];
+const allowedOrigins = ['https://uniipal.com', 'https://uniipaladmin.vercel.app','http://localhost:3001'];
 
 app.use(cors({
   origin: function (origin, callback) {
+    console.log('Request from:', origin);
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
+      // callback(null, true);
     }
   },
   credentials: true,  // Allow credentials like cookies
@@ -130,6 +132,7 @@ const userSchema = new mongoose.Schema({
   passingOutYear: { type: Number },
   suspendedUntil: { type: Date, default: null },
   isBlocked: { type: Boolean, default: false },
+  hasAcceptedDisclaimer: { type: Boolean, default: false }, 
 });
 const User = mongoose.model('User', userSchema);
 
@@ -442,3 +445,28 @@ app.get('/api/products/user/:uid', async (req, res) => {
 
 // Start the server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
+// Update disclaimer acceptance
+app.put('/api/user/disclaimer/:uid', async (req, res) => {
+  try {
+    const { uid } = req.params;
+    const { hasAcceptedDisclaimer } = req.body;
+
+    const user = await User.findOneAndUpdate(
+      { uid },
+      { hasAcceptedDisclaimer },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'Disclaimer acceptance updated', user });
+  } catch (error) {
+    console.error('Error updating disclaimer acceptance:', error);
+    res.status(500).json({ message: 'Error updating disclaimer acceptance' });
+  }
+});
+

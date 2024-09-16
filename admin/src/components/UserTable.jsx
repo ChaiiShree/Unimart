@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { BACKEND_URL } from "../config";
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
@@ -12,7 +13,7 @@ const UserTable = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('https://unipalmark-backend.hf.space/api/users');
+      const response = await axios.get(BACKEND_URL + 'api/users');
       setUsers(response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -24,7 +25,7 @@ const UserTable = () => {
 
   const handleSuspend = async (uid) => {
     try {
-      await axios.put(`https://unipalmark-backend.hf.space/api/users/suspend/${uid}`);
+      await axios.put(BACKEND_URL + `api/users/suspend/${uid}`);
       fetchUsers();  // Refresh the user list
     } catch (error) {
       console.error('Error suspending user:', error);
@@ -34,7 +35,7 @@ const UserTable = () => {
 
   const handleBlock = async (uid) => {
     try {
-      await axios.put(`https://unipalmark-backend.hf.space/api/users/block/${uid}`);
+      await axios.put(BACKEND_URL + `api/users/block/${uid}`);
       fetchUsers();  // Refresh user list
     } catch (error) {
       console.error('Error blocking user:', error);
@@ -44,7 +45,7 @@ const UserTable = () => {
 
   const handleUnblock = async (uid) => {
     try {
-      await axios.put(`https://unipalmark-backend.hf.space/api/users/unblock/${uid}`);
+      await axios.put(BACKEND_URL + `api/users/unblock/${uid}`);
       fetchUsers();
     } catch (error) {
       console.error('Error unblocking user:', error);
@@ -54,7 +55,7 @@ const UserTable = () => {
 
   const handleUnsuspend = async (uid) => {
     try {
-      await axios.put(`https://unipalmark-backend.hf.space/api/users/unsuspend/${uid}`);
+      await axios.put(BACKEND_URL + `api/users/unsuspend/${uid}`);
       fetchUsers();
     } catch (error) {
       console.error('Error unsuspending user:', error);

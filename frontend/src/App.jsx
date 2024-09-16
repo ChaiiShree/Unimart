@@ -9,9 +9,11 @@ import Loader from "./components/Loading";
 import { WishlistProvider } from "./components/WishlistContext";
 import { auth, provider } from "./firebaseConfig";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import Disclaimer from "./components/Disclaimer";
 
 // Protected Route Component
 const ProtectedRoute = ({ user, children }) => {
+  
   if (!user) {
     return <Navigate to="/home" />;
   }
@@ -20,8 +22,31 @@ const ProtectedRoute = ({ user, children }) => {
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [showDisclaimer, setShowDisclaimer] = useState(true);
   const [user, setUser] = useState(null);
   const [authError, setAuthError] = useState("");
+
+  useEffect(() => {
+    if (user) { 
+      fetch(BACKEND_URL + `api/user/${user.uid}`)
+        .then(res => res.json())
+        .then(userData => {
+          setShowDisclaimer(!userData.hasAcceptedDisclaimer);
+        })
+        .catch(error => {
+          console.error('Error fetching user data:', error);
+        });
+    }else{
+      //check from local storage
+      const disclaimerAccepted = localStorage.getItem('disclaimerAccepted');
+      if(disclaimerAccepted){
+        setShowDisclaimer(false);
+      }else{
+        setShowDisclaimer(true);
+      }
+    }
+  }, [user]);
+
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -29,6 +54,8 @@ function App() {
       setUser(JSON.parse(storedUser));
       setIsLoading(false);
     }
+
+  
 
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
@@ -66,6 +93,9 @@ function App() {
     <WishlistProvider>
       <Router>
         {authError && <div className="error">{authError}</div>} {/* Display Error */}
+
+        {showDisclaimer && <Disclaimer onClose={() => setShowDisclaimer(false)} />} {/* Display Disclaimer */}
+        
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Home />} />

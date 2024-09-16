@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ProductRow from "./ProductRow"; // Assuming you have this component
+import { BACKEND_URL } from "../config";
 
 const ProductTable = () => {
   const [products, setProducts] = useState([]);
@@ -13,7 +14,7 @@ const ProductTable = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("https://unipalmark-backend.hf.space/api/products");
+      const response = await axios.get(BACKEND_URL + "api/products");
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -25,7 +26,7 @@ const ProductTable = () => {
 
   const handleRemoveProduct = async (id) => {
     try {
-      await axios.delete(`https://unipalmark-backend.hf.space/api/products/${id}`);
+      await axios.delete(BACKEND_URL + `api/products/${id}`);
       setProducts(products.filter((product) => product._id !== id));  // Remove the product from state
     } catch (error) {
       console.error("Error removing product:", error);
