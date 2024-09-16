@@ -76,6 +76,16 @@ body {
   margin-top: 10px;
 }
 
+@media screen and (max-width: 768px) {
+  .remove-button {
+    font-size: 1.2rem; /* Reduce font size for smaller screens */
+    padding: 3px; /* Smaller padding */
+    top: 8px; /* Adjust positioning slightly */
+    right: 8px;
+  }
+}
+
+/* Hover effect for the remove button */
 .remove-button:hover {
   background-color: red;
 }
