@@ -62,9 +62,9 @@ const Navbar = () => {
     }
   };
 
-  const handleSearchIconClick = () => {
-    setShowMobileSearch(!showMobileSearch);
-  };
+  // const handleSearchIconClick = () => {
+  //   setShowMobileSearch(!showMobileSearch);
+  // };
 
   return (
     <nav className="navbar">
@@ -90,7 +90,11 @@ const Navbar = () => {
           {MenuItems.map((item, index) => (
             <li key={index}>
               {(!user && (item.title === 'Wishlist' || item.title === 'Sell Your Product')) ? (
-                <button className="nav-links" onClick={handleLogin}>
+                <button className="nav-links" onClick={() => {
+                  handleLogin();
+                  document.body.classList.toggle('menu-open');
+                  setClicked(false);
+                }}>
                   {item.icon && <i className={item.icon}></i>}
                   {item.title}
                 </button>
@@ -121,16 +125,30 @@ const Navbar = () => {
           <li>
             {user ? (
               <div className="user-actions">
-                <Link className="nav-links" to="/profile">
+                <Link className="nav-links" to="/profile" 
+                onClick={() => {
+                  document.body.classList.toggle('menu-open');
+                  setClicked(false);
+                }
+                }
+                >
                   <i className="fa fa-user"></i>
                   Profile
                 </Link>
-                <button className="nav-links login-button" onClick={handleLogout}>
+                <button className="nav-links login-button" onClick={() => {
+                  handleLogout();
+                  document.body.classList.toggle('menu-open');
+                  setClicked(false);
+                }}>
                   Log Out
                 </button>
               </div>
             ) : (
-              <button className="nav-links login-button" onClick={handleLogin}>
+              <button className="nav-links login-button" onClick={() => {
+                handleLogin();
+                document.body.classList.toggle('menu-open');
+                setClicked(false);
+              }}>
                 Log In
               </button>
             )}
