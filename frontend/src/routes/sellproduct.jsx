@@ -216,6 +216,7 @@ function SellProduct() {
     <>
       <div className="sell-product-container page">
         <h2>Sell Your Product</h2>
+        <center>
         <form className="sell-product-form" onSubmit={handleSubmit}>
           <FormField
             label="Seller Name *"
@@ -365,6 +366,7 @@ function SellProduct() {
           />
           <button type="submit">Submit</button>
         </form>
+        </center>
         <ToastContainer />
       </div>
       <Footer />
