@@ -50,21 +50,6 @@ body {
   margin: 5px 0;
 }
 
-.remove-button {
-  background-color: transparent; /* Make background transparent */
-  color: white; /* Change color to white */
-  border: none;
-  border-radius: 50%; /* Make it circular */
-  padding: 5px; /* Adjust padding */
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  position: absolute; /* Position it absolutely */
-  top: 10px; /* Adjust top position */
-  right: 10px; /* Adjust right position */
-  font-size: 1.5rem; /* Increase font size for cross */
-  line-height: 1; /* Adjust line height */
-}
-
 .chat-button {
   background-color: orange;
   color: black;
@@ -76,20 +61,42 @@ body {
   margin-top: 10px;
 }
 
+/* Remove button default styling */
+.remove-button {
+  background-color: transparent; /* Transparent background by default */
+  color: white; /* White color for the '✖' */
+  border: none;
+  border-radius: 50%; /* Make it circular */
+  padding: 5px; /* Smaller padding */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.2rem; /* Adjusted font size */
+  line-height: 1; /* Ensures the cross is centered */
+}
+
+/* Responsive changes for smaller screens */
 @media screen and (max-width: 768px) {
   .remove-button {
-    font-size: 1.2rem; /* Reduce font size for smaller screens */
-    padding: 3px; /* Smaller padding */
-    top: 8px; /* Adjust positioning slightly */
-    right: 8px;
+    font-size: 1rem; /* Smaller font size on small screens */
+    padding: 4px; /* Reduce padding slightly */
+    top: 8px; /* Adjust top positioning */
+    right: 8px; /* Adjust right positioning */
   }
 }
 
 /* Hover effect for the remove button */
 .remove-button:hover {
-  background-color: red;
+  background-color: red; /* Change background color on hover */
+  transform: scale(1.1); /* Slightly increase size on hover */
 }
 
+/* Remove button: no hover */
+.remove-button:active {
+  transform: scale(0.95); /* Slightly shrink on click */
+}
 
 .total-price {
   text-align: right;
