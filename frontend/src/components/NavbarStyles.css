@@ -15,9 +15,9 @@
     font-family: 'Merriweather', serif;
 }
 
-a.navbar-logo {
+/* a.navbar-logo {
   z-index: -99;
-}
+} */
 
 body.menu-open {
   overflow: hidden;

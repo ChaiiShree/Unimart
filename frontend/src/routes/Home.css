@@ -83,7 +83,7 @@
 .product-card {
   background-color: #1c1c1c;
   border-radius: 15px;
-  overflow: hidden;
+  /* overflow: hidden; */
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -102,7 +102,7 @@
   background-size: contain; /* Use 'cover' to fill the container, 'contain' to fit inside */
   background-position: center;
   background-repeat: no-repeat;
-  overflow: hidden;
+  /* overflow: hidden; */
   display: flex;
   align-items: center;
   justify-content: center;
