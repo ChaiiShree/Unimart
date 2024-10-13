@@ -23,7 +23,11 @@ const Navbar = () => {
 
   const handleClick = () => {
     setClicked(!clicked);
-    document.body.classList.toggle('menu-open');
+    if (!clicked) {
+      document.body.classList.add('menu-open');
+    } else {
+      document.body.classList.remove('menu-open');
+    }
   };
 
   let onSearch = (text) => {
@@ -105,14 +109,16 @@ const Navbar = () => {
                   {item.title}
                 </button>
               ) : (
-                <Link className="nav-links" to={item.url} onClick={() => {
-                  document.body.classList.toggle('menu-open');
-                  setClicked(false);
-                }}>
-                  {item.icon && <i className={item.icon}></i>}
-                  {item.title}
-                </Link>
-              )}
+                <Link 
+  className="nav-links" 
+  to={item.url} 
+  onClick={() => {
+    document.body.classList.remove('menu-open');  // Ensure the class is removed
+    setClicked(false);  // Close the menu
+  }}>
+  {item.icon && <i className={item.icon}></i>}
+  {item.title}
+</Link>)}
             </li>
           ))}
           {showMobileSearch && (

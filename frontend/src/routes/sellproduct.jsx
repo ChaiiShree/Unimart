@@ -27,7 +27,14 @@ function SellProduct() {
   const [user] = useAuthState(auth);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; if (name === "price" && Number(value) > 6000) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        price: "Price cannot exceed ₹6000",
+      }));
+      return;
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -112,6 +119,7 @@ function SellProduct() {
     if (!category || category === "") newErrors.category = "Category is required";
     if (!description) newErrors.description = "Description is required";
     if (!price) newErrors.price = "Price is required";
+    if (Number(price) > 6000) newErrors.price = "Price cannot exceed ₹6000";
     if (images.length === 0) newErrors.images = "Please Upload an Image (Size limit:1.5Mb)";
     if (!hostel || hostel === "") newErrors.hostel = "Hostel is required";
     if (!quantity) newErrors.quantity = "Quantity is required";
