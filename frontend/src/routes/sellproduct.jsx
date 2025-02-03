@@ -60,7 +60,7 @@ function SellProduct() {
   
       try {
         // POST request to the image analysis API
-        const response = await axios.post('https://unipalmark-image.hf.space/analyze_image', form);
+        const response = await axios.post('https://unipalmark-image.hf.space/analyze-image', form);
  
         console.log("Full API Response:", response);
         const apiResponse = response.data;
