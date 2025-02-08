@@ -98,7 +98,7 @@ function App() {
         {authError && <div className="error">{authError}</div>} {/* Display Error */}
         <Navbar />
 
-        {showDisclaimer && <Disclaimer onClose={() => setShowDisclaimer(false)} />} {/* Display Disclaimer */}
+        {showDisclaimer && <Disclaimer onClose={() => setShowDisclaimer(false)}   />} {/* Display Disclaimer */}
         
 
         <Routes>
