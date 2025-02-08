@@ -18,11 +18,11 @@ export const MenuItems = [
     icon: "fa-solid fa-comments-dollar" 
   },
   
-  {
-    title: "About",
-    url: "/About",
-    cname: "nav-links",
-    icon: "fa-solid fa-circle-info"
-  },
+  // {
+  //   title: "About",
+  //   url: "/About",
+  //   cname: "nav-links",
+  //   icon: "fa-solid fa-circle-info"
+  // },
 
 ];
