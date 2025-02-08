@@ -60,16 +60,17 @@ function SellProduct() {
   
       try {
         // POST request to the image analysis API
-        const response = await axios.post('https://merasabkuch-countthings.hf.space/analyze-image', form);
-  
-        // Log the raw API response
+        const response = await axios.post('https://unipalmark-image.hf.space/analyze-image', form);
+ 
         console.log("Full API Response:", response);
-  
-        // Parse the stringified JSON in response.data
-        const apiResponse = JSON.parse(response.data);
-  
-        // Log the parsed response for better inspection
+        const apiResponse =  JSON.parse(response.data);
         console.log("API Response Data:", apiResponse);
+        
+        if(apiResponse.detail) {
+          console.error("API validation error:", apiResponse.detail);
+          toast.error("Invalid image file provided.");
+          continue;
+        }
   
         // Extracting values from the parsed response
         const useable_on_website = apiResponse.useable_on_website;
