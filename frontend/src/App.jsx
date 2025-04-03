@@ -90,7 +90,7 @@ function App() {
   return (
     <WishlistProvider>
       <Router>
-{/*         {authError && <div className="error">{authError}</div>} {/* Display Error */} */}
+{/*         {authError && <div className="error">{authError}</div>} {/* Display Error */} 
         <Navbar />
 
         {showDisclaimer && <Disclaimer onClose={() => setShowDisclaimer(false)}   />} {/* Display Disclaimer */}
