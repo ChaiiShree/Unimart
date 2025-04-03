@@ -60,24 +60,19 @@ function App() {
 
   
 
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        if (currentUser.email.endsWith("@thapar.edu")) {
-          setUser(currentUser);
-          localStorage.setItem("user", JSON.stringify(currentUser));
-        } else {
-          setAuthError("Only Thapar.edu email addresses are allowed to log in.");
-          handleLogout();
-        }
-      } else {
-        setUser(null);
-        localStorage.removeItem("user");
-      }
-      setIsLoading(false);
-    });
+  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    if (currentUser) {
+      setUser(currentUser);
+      localStorage.setItem("user", JSON.stringify(currentUser));
+    } else {
+      setUser(null);
+      localStorage.removeItem("user");
+    }
+    setIsLoading(false);
+  });
 
-    return () => unsubscribe();
-  }, []);
+  return () => unsubscribe();
+}, []);
 
   const handleLogout = async () => {
     try {
@@ -95,7 +90,7 @@ function App() {
   return (
     <WishlistProvider>
       <Router>
-        {authError && <div className="error">{authError}</div>} {/* Display Error */}
+{/*         {authError && <div className="error">{authError}</div>} {/* Display Error */} */}
         <Navbar />
 
         {showDisclaimer && <Disclaimer onClose={() => setShowDisclaimer(false)}   />} {/* Display Disclaimer */}
