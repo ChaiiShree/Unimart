@@ -58,6 +58,21 @@ const handleLogin = async () => {
   }
 };
 
+// login restriction function
+//   const handleLogin = async () => {
+//   try {
+//     const result = await signInWithPopup(auth, provider);
+//     const email = result.user.email;
+//     if (email.endsWith("@thapar.edu")) {
+//       setUser(result.user);
+//     } else {
+//       alert("Only Thapar.edu email addresses are allowed to log in.");
+//       await signOut(auth);
+//     }
+//   } catch (error) {
+//     console.error("Error logging in:", error);
+//   }
+// };
 
   const handleLogout = async () => {
     try {
